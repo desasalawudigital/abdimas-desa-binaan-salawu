@@ -1,0 +1,29 @@
+{
+  "seni_anyaman": [
+    "/images/seni/seni_1_1.jpeg",
+    "/images/seni/seni_2_2.jpeg",
+    "/images/seni/seni_3_1.jpeg",
+    "/images/seni/seni_3_2.jpeg",
+    "/images/seni/seni_4_1.jpeg",
+    "/images/foto_umkm_2_1.jpeg",
+    "/images/foto_umkm_3_8.jpeg",
+    "/images/foto_umkm_3_3.jpeg"
+  ],
+  "alam_budaya": [
+    {
+      "url": "/images/seni/seni_7_1.jpeg",
+      "title": "Camping Ground Desa",
+      "desc": "Wisata camping ditengah desa"
+    },
+    {
+      "url": "/images/seni/seni_4_1.jpeg",
+      "title": "Bermain Egrang Dengan Warga Desa ",
+      "desc": ""
+    }
+  ],
+  "hero_image": {
+    "url": "/images/foto_umkm_1_5.jpeg",
+    "title": "Kerajinan Anyaman",
+    "desc": "Kerajinan unggulan desa salawu"
+  }
+}

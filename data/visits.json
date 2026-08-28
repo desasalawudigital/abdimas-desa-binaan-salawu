@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "title": "Sosialisasi & Koordinasi Awal",
+    "date": "12 Mei 2026",
+    "desc": "Pertemuan pertama tim Abdimas dengan Kepala Desa dan jajaran aparat Desa Salawu untuk menyelaraskan program pendampingan digitalisasi produk lokal.",
+    "imageEmoji": "🤝",
+    "imageUrl": "/kunjungan/kunjungan_1.jpeg"
+  },
+  {
+    "id": "2",
+    "title": "Pemetaan Potensi & Foto Produk",
+    "date": "28 Mei 2026",
+    "desc": "Kunjungan langsung ke rumah-rumah pengrajin bambu di RT 01-04 untuk mendata kendala produksi, memotret kerajinan, dan mencatat spesifikasi produk.",
+    "imageEmoji": "📸",
+    "imageUrl": "/kunjungan/kunjungan_2.jpeg"
+  },
+  {
+    "id": "3",
+    "title": "Workshop Pemasaran & Kemasan",
+    "date": "15 Juni 2026",
+    "desc": "Pelatihan intensif tata cara pengemasan (packaging) yang menarik, pendaftaran izin usaha mikro, serta pengenalan promosi digital via WhatsApp Business.",
+    "imageEmoji": "🏫",
+    "imageUrl": "/kunjungan/kunjungan_3.jpeg"
+  },
+  {
+    "id": "4",
+    "title": "Simulasi Peluncuran Website",
+    "date": "10 Juli 2026",
+    "desc": "Uji coba penggunaan website katalog produk bersama perwakilan pengrajin dan pengurus karang taruna desa selaku admin pengelola konten.",
+    "imageEmoji": "💻",
+    "imageUrl": "/kunjungan/kunjungan_4.jpeg"
+  }
+]
