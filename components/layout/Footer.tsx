@@ -158,22 +158,22 @@ export default function Footer() {
             <h3 className="text-lg font-semibold font-poppins mb-6 text-background">Navigasi</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="#beranda" className="text-background/70 hover:text-secondary transition-colors text-sm">
+                <Link href="/" className="text-background/70 hover:text-secondary transition-colors text-sm">
                   Beranda
                 </Link>
               </li>
               <li>
-                <Link href="#tentang" className="text-background/70 hover:text-secondary transition-colors text-sm">
+                <Link href="/profil" className="text-background/70 hover:text-secondary transition-colors text-sm">
                   Tentang Salawu
                 </Link>
               </li>
               <li>
-                <Link href="#umkm" className="text-background/70 hover:text-secondary transition-colors text-sm">
+                <Link href="/products" className="text-background/70 hover:text-secondary transition-colors text-sm">
                   Katalog UMKM
                 </Link>
               </li>
               <li>
-                <Link href="#wisata" className="text-background/70 hover:text-secondary transition-colors text-sm">
+                <Link href="/kunjungan" className="text-background/70 hover:text-secondary transition-colors text-sm">
                   Wisata & Budaya
                 </Link>
               </li>

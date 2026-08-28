@@ -62,7 +62,7 @@ export default function HeroSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
             <Link
-              href="#umkm"
+              href="/products"
               className={cn(
                 buttonVariants({ variant: "default", size: "lg" }),
                 "rounded-full font-poppins shadow-md group w-full sm:w-auto"
