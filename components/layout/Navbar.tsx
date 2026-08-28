@@ -87,7 +87,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Drawer */}
       {isOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-lg border-b border-border px-4 py-6 absolute top-full left-0 right-0 shadow-lg animate-in fade-in slide-in-from-top duration-200">
+        <div className="md:hidden bg-background border-b border-border px-4 py-6 absolute top-full left-0 right-0 shadow-2xl animate-in fade-in slide-in-from-top duration-200 z-50">
           <nav className="flex flex-col space-y-4">
             {navLinks.map((link) => (
               <Link

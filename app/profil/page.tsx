@@ -50,22 +50,24 @@ export default function ProfilDesa() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Sidebar / Tabs */}
-            <div className="lg:col-span-3 sticky top-28 bg-muted/30 border border-border/50 rounded-2xl p-4 flex flex-col gap-2">
+            {/* Sidebar / Tabs (Horizontal Scroll on Mobile, Vertical Sticky on Desktop) */}
+            <div className="lg:col-span-3 sticky top-20 lg:top-28 z-30 bg-background/95 backdrop-blur-md border border-border/60 rounded-2xl p-2 md:p-4 flex flex-row lg:flex-col gap-2 overflow-x-auto scrollbar-none shadow-sm">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                    }}
                     className={cn(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold font-poppins transition-all text-left",
+                      "flex items-center gap-2.5 px-4 py-2.5 lg:py-3 rounded-xl text-xs md:text-sm font-semibold font-poppins transition-all text-left shrink-0 whitespace-nowrap",
                       activeTab === tab.id
                         ? "bg-primary text-white shadow-md"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground bg-muted/30 lg:bg-transparent"
                     )}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-4 h-4 md:w-5 md:h-5 shrink-0" />
                     {tab.label}
                   </button>
                 );
