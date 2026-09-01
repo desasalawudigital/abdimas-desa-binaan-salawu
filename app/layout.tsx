@@ -36,6 +36,9 @@ export const metadata: Metadata = {
       name: "Tim Abdimas Desa Binaan Salawu",
     },
   ],
+  verification: {
+    google: "ejHgt-z9H2hJZjcIVjDI8FeYNvPDN6oEcikWACPWCZs",
+  },
 };
 
 export default function RootLayout({
