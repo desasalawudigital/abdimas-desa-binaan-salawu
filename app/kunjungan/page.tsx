@@ -66,7 +66,7 @@ export default async function KunjunganPage() {
 
                 <div className="flex items-center space-x-1 text-xs text-muted-foreground border-t border-border/40 pt-4 font-poppins">
                   <MapPin className="h-3.5 w-3.5 text-secondary" />
-                  <span>Posko Abdimas Desa Salawu</span>
+                  <span>Pusat Kegiatan Desa Salawu</span>
                 </div>
               </div>
             ))}

@@ -70,9 +70,9 @@ export default async function Home() {
                   <div className="p-3 bg-primary/10 rounded-2xl w-fit text-primary">
                     <Heart className="h-6 w-6" />
                   </div>
-                  <h3 className="font-bold text-lg font-poppins text-foreground">Pendampingan Abdimas</h3>
+                  <h3 className="font-bold text-lg font-poppins text-foreground">Pendampingan Digital</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Didukung bimbingan intensif akademisi untuk modernisasi kemasan dan legalitas UMKM.
+                    Didukung bimbingan intensif untuk modernisasi kemasan dan legalitas UMKM.
                   </p>
                 </div>
               </div>
@@ -93,7 +93,7 @@ export default async function Home() {
                 </p>
 
                 <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans">
-                  Melalui program Pengabdian Masyarakat (Abdimas) perguruan tinggi, kami berkomitmen mendampingi para pengrajin dalam bertransformasi secara digital. Tujuan utama kami adalah meningkatkan daya saing UMKM lokal, melestarikan warisan seni budaya, dan memperkenalkan potensi wisata alam Salawu ke khalayak luas.
+                  Melalui program pendampingan digitalisasi ini, kami berkomitmen mendukung para pengrajin dalam bertransformasi secara digital. Tujuan utama kami adalah meningkatkan daya saing UMKM lokal, melestarikan warisan seni budaya, dan memperkenalkan potensi wisata alam Salawu ke khalayak luas.
                 </p>
 
                 <div className="pt-2">

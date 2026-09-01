@@ -19,7 +19,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Website Abdimas Desa Binaan Salawu",
+  title: "Website Resmi Desa Binaan Salawu",
   description:
     "Website resmi Desa Binaan Salawu sebagai media promosi UMKM, budaya, wisata, dan informasi desa.",
   keywords: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: "Tim Abdimas Desa Binaan Salawu",
+      name: "Pemerintah Desa Binaan Salawu",
     },
   ],
   verification: {

@@ -140,7 +140,7 @@ export default function UmkmSection({ initialProducts }: Props) {
               <CheckCircle2 className="h-5 w-5" /> Dukungan Pendampingan Digital
             </h4>
             <p className="text-sm text-muted-foreground max-w-xl">
-              Melalui program Abdimas, pengrajin dibekali pelatihan kualitas produk, standardisasi harga, serta pemasaran digital untuk memperluas jangkauan pasar.
+              Melalui program pendampingan ini, pengrajin dibekali pelatihan kualitas produk, standardisasi harga, serta pemasaran digital untuk memperluas jangkauan pasar.
             </p>
           </div>
           <Link

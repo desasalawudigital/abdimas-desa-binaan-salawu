@@ -247,7 +247,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-background/10 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-background/50 gap-4">
-          <p>© {new Date().getFullYear()} Abdimas Desa Binaan Salawu. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Desa Binaan Salawu. All rights reserved.</p>
           
           <div className="flex space-x-6">
             <Link href="#" className="hover:text-background transition-colors">Kebijakan Privasi</Link>

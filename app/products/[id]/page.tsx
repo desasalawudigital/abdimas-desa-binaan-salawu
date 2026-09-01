@@ -147,13 +147,13 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Abdimas Guarantee Notice */}
+          {/* Quality Guarantee Notice */}
           <div className="mt-10 bg-primary/[0.02] border border-primary/10 rounded-2xl p-5 flex items-start gap-4">
             <ShieldCheck className="h-6 w-6 text-primary shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h4 className="font-bold text-sm font-poppins text-primary">Jaminan Keaslian Kriya Salawu</h4>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Produk ini terdaftar secara resmi sebagai produk binaan Tim Abdimas Desa Salawu. Dibuat 100% dari bambu lokal Tasikmalaya berkualitas tinggi yang ramah lingkungan dan bersumber lestari.
+                Produk ini terdaftar secara resmi sebagai produk kriya unggulan Desa Salawu. Dibuat 100% dari bambu lokal Tasikmalaya berkualitas tinggi yang ramah lingkungan dan bersumber lestari.
               </p>
             </div>
           </div>

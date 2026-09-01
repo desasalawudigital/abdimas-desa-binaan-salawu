@@ -166,7 +166,7 @@ export default function KriyaPage() {
             </div>
           </div>
 
-          {/* Abdimas Cultural Preservation Notice */}
+          {/* Cultural Preservation Notice */}
           <div className="bg-primary text-white rounded-3xl p-8 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4">
               <div className="inline-flex items-center space-x-2 bg-white/10 px-3.5 py-1.5 rounded-full text-xs font-semibold font-poppins">
@@ -177,7 +177,7 @@ export default function KriyaPage() {
                 Mendukung Masa Depan Hijau & Berkelanjutan
               </h3>
               <p className="text-white/80 text-sm leading-relaxed font-sans">
-                Melalui website ini, program KKN Abdimas mengampanyekan pentingnya beralih ke peralatan bambu organik guna mengurangi limbah plastik dapur sekali pakai. Mari jadi bagian dari penyelamat lingkungan dengan mengadopsi kriya bambu Salawu.
+                Melalui website ini, kami mengampanyekan pentingnya beralih ke peralatan bambu organik guna mengurangi limbah plastik dapur sekali pakai. Mari jadi bagian dari penyelamat lingkungan dengan mengadopsi kriya bambu Salawu.
               </p>
             </div>
             <div className="lg:col-span-4 lg:text-right">
