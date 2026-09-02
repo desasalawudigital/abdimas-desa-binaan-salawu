@@ -169,8 +169,9 @@ export async function addProduct(product: Omit<Product, "id">): Promise<Product 
     try {
       await setDoc(doc(db, "products", newId), sanitizeFirestoreData(newProduct));
       return newProduct;
-    } catch (error) {
-      console.error("Firestore addProduct error, falling back to local storage:", error);
+    } catch (error: any) {
+      console.error("Firestore addProduct error:", error);
+      throw new Error("Firebase Error: " + (error.message || JSON.stringify(error)));
     }
   }
 
