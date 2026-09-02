@@ -21,7 +21,6 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
   const [category, setCategory] = useState<"dapur" | "dekorasi" | "fashion" | "makanan" | "minuman">("dapur");
   const [price, setPrice] = useState("");
   const [desc, setDesc] = useState("");
-  const [emoji, setEmoji] = useState("📦");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [stock, setStock] = useState("");
@@ -47,7 +46,6 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
     setCategory(product.category);
     setPrice(product.price.toString());
     setDesc(product.desc);
-    setEmoji(product.emoji);
     setImageUrl(product.imageUrl || "");
     setImageFile(null);
     setStock(product.stock.toString());
@@ -64,7 +62,6 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
     setCategory("dapur");
     setPrice("");
     setDesc("");
-    setEmoji("📦");
     setImageUrl("");
     setImageFile(null);
     setStock("");
@@ -118,7 +115,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
       category,
       price: Number(price),
       desc,
-      emoji,
+      emoji: "📦",
       imageUrl: uploadedImageUrl,
       stock: Number(stock) || 0,
       dimensions,
@@ -288,27 +285,15 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground font-poppins">Visual Emoji</label>
-                <input
-                  type="text"
-                  placeholder="Contoh: 🏺"
-                  value={emoji}
-                  onChange={(e) => setEmoji(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border text-sm text-center focus:outline-none focus:border-primary bg-muted/20"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground font-poppins">Stok Awal</label>
-                <input
-                  type="number"
-                  placeholder="Contoh: 30"
-                  value={stock}
-                  onChange={(e) => setStock(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20"
-                />
-              </div>
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-muted-foreground font-poppins">Stok Awal</label>
+              <input
+                type="number"
+                placeholder="Contoh: 30"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20"
+              />
             </div>
 
             <div className="space-y-1">
