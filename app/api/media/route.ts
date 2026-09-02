@@ -84,21 +84,24 @@ export async function POST(request: Request) {
     }
 
     // Save to public/images/uploads locally
-    const uploadDir = path.join(process.cwd(), "public", "images", "uploads");
-    
     try {
-      await stat(uploadDir);
-    } catch {
+      const uploadDir = path.join(process.cwd(), "public", "images", "uploads");
       await mkdir(uploadDir, { recursive: true });
+      const filePath = path.join(uploadDir, filename);
+      await writeFile(filePath, buffer);
+      const publicUrl = `/images/uploads/${filename}`;
+      return NextResponse.json({ success: true, url: publicUrl });
+    } catch (fsErr) {
+      console.warn("Local filesystem write failed, falling back to Base64 Data URL:", fsErr);
     }
 
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
-
-    const publicUrl = `/images/uploads/${filename}`;
-    return NextResponse.json({ success: true, url: publicUrl });
-  } catch (error) {
+    // Fallback: Base64 Data URL
+    const mimeType = file.type || "image/jpeg";
+    const base64Data = buffer.toString("base64");
+    const dataUrl = `data:${mimeType};base64,${base64Data}`;
+    return NextResponse.json({ success: true, url: dataUrl });
+  } catch (error: any) {
     console.error("Failed to upload media:", error);
-    return NextResponse.json({ error: "Failed to upload media" }, { status: 500 });
+    return NextResponse.json({ error: error?.message || "Failed to upload media" }, { status: 500 });
   }
 }

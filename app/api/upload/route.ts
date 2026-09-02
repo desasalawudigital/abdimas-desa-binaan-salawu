@@ -28,25 +28,29 @@ export async function POST(request: Request) {
         const downloadUrl = await getDownloadURL(storageRef);
         return NextResponse.json({ url: downloadUrl });
       } catch (fbErr) {
-        console.error("Firebase Storage upload error, fallback to local:", fbErr);
+        console.error("Firebase Storage upload error, trying local storage or Base64 fallback:", fbErr);
       }
     }
 
-    // Fallback to local upload directory
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    // Fallback 1: Try local filesystem upload directory (for localhost/standalone server)
     try {
+      const uploadDir = path.join(process.cwd(), "public/uploads");
       await mkdir(uploadDir, { recursive: true });
-    } catch {
-      // Ignore if exists
+      const filePath = path.join(uploadDir, filename);
+      await writeFile(filePath, buffer);
+      const fileUrl = `/uploads/${filename}`;
+      return NextResponse.json({ url: fileUrl });
+    } catch (fsErr) {
+      console.warn("Local filesystem write failed (read-only/serverless environment), falling back to Base64 Data URL:", fsErr);
     }
 
-    const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
-
-    const fileUrl = `/uploads/${filename}`;
-    return NextResponse.json({ url: fileUrl });
-  } catch (error) {
+    // Fallback 2: Base64 Data URL so image upload NEVER fails even without storage permissions or writable disk
+    const mimeType = file.type || "image/jpeg";
+    const base64Data = buffer.toString("base64");
+    const dataUrl = `data:${mimeType};base64,${base64Data}`;
+    return NextResponse.json({ url: dataUrl });
+  } catch (error: any) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: "Failed to upload file." }, { status: 500 });
+    return NextResponse.json({ error: error?.message || "Failed to upload file." }, { status: 500 });
   }
 }
