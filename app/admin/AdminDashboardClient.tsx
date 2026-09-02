@@ -5,6 +5,8 @@ import { Plus, Edit2, Trash2, X, RefreshCw, Layers, Users, Box } from "lucide-re
 import { Product } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { compressImage, safeFetchJson } from "@/lib/image-compression";
+import { storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 interface Props {
   initialProducts: Product[];
@@ -90,20 +92,15 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
     if (imageFile) {
       try {
         const fileToUpload = await compressImage(imageFile);
-        const formData = new FormData();
-        formData.append("file", fileToUpload);
         
-        const result = await safeFetchJson<{ url: string }>("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!result.ok || !result.data) {
-          throw new Error(result.error || "Gagal mengunggah foto.");
-        }
-        uploadedImageUrl = result.data.url;
+        const filename = `${Date.now()}_${fileToUpload.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+        const storageRef = ref(storage, `uploads/${filename}`);
+        const metadata = { contentType: fileToUpload.type || "image/jpeg" };
+        
+        await uploadBytes(storageRef, fileToUpload, metadata);
+        uploadedImageUrl = await getDownloadURL(storageRef);
       } catch (err: any) {
-        setMessage({ text: err.message, type: "error" });
+        setMessage({ text: err.message || "Gagal mengunggah foto ke Firebase.", type: "error" });
         setIsSubmitting(false);
         return;
       }
