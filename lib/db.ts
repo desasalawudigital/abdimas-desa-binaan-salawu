@@ -9,6 +9,8 @@ import {
   setDoc, 
   deleteDoc
 } from "firebase/firestore";
+import defaultProducts from "@/data/products.json";
+import defaultVisits from "@/data/visits.json";
 
 export interface Product {
   id: string;
@@ -57,8 +59,7 @@ async function getLocalProducts(): Promise<Product[]> {
     const data = await fs.readFile(PRODUCTS_PATH, "utf-8");
     return JSON.parse(data);
   } catch (error) {
-    console.error("Error reading local products JSON:", error);
-    return [];
+    return (defaultProducts as Product[]) || [];
   }
 }
 
@@ -78,8 +79,7 @@ async function getLocalVisits(): Promise<Visit[]> {
     const data = await fs.readFile(VISITS_PATH, "utf-8");
     return JSON.parse(data);
   } catch (error) {
-    console.error("Error reading local visits JSON:", error);
-    return [];
+    return (defaultVisits as Visit[]) || [];
   }
 }
 
@@ -109,11 +109,15 @@ export async function getProducts(): Promise<Product[]> {
       if (localProducts.length > 0) {
         console.log("Seeding Firestore products collection from local JSON...");
         for (const prod of localProducts) {
-          await setDoc(doc(db, "products", prod.id), sanitizeFirestoreData(prod));
+          try {
+            await setDoc(doc(db, "products", prod.id), sanitizeFirestoreData(prod));
+          } catch (seedErr) {
+            console.error("Seeding item error:", seedErr);
+          }
         }
         return localProducts;
       }
-      return [];
+      return (defaultProducts as Product[]) || [];
     } catch (error) {
       console.error("Firestore getProducts error, falling back to local file:", error);
       return getLocalProducts();
@@ -232,11 +236,15 @@ export async function getVisits(): Promise<Visit[]> {
       if (localVisits.length > 0) {
         console.log("Seeding Firestore visits collection from local JSON...");
         for (const v of localVisits) {
-          await setDoc(doc(db, "visits", v.id), sanitizeFirestoreData(v));
+          try {
+            await setDoc(doc(db, "visits", v.id), sanitizeFirestoreData(v));
+          } catch (seedErr) {
+            console.error("Seeding visit item error:", seedErr);
+          }
         }
         return localVisits;
       }
-      return [];
+      return (defaultVisits as Visit[]) || [];
     } catch (error) {
       console.error("Firestore getVisits error, falling back to local file:", error);
       return getLocalVisits();
