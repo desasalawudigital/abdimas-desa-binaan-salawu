@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Plus, Edit2, Trash2, X, RefreshCw, Layers, Users, Box } from "lucide-react";
+import { Plus, Edit2, Trash2, X, RefreshCw, Layers, Users, Box, Loader2 } from "lucide-react";
 import { Product } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { compressImage, safeFetchJson } from "@/lib/image-compression";
+import { toast } from "sonner";
 
 interface Props {
   initialProducts: Product[];
@@ -13,7 +14,6 @@ interface Props {
 export default function AdminDashboardClient({ initialProducts }: Props) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
 
   // Form Fields State
   const [isEditingId, setIsEditingId] = useState<string | null>(null);
@@ -77,12 +77,11 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !price || !category || !craftsman) {
-      setMessage({ text: "Silakan isi kolom Nama, Kategori, Harga, dan Pengrajin.", type: "error" });
+      toast.error("Silakan isi kolom Nama, Kategori, Harga, dan Pengrajin.");
       return;
     }
 
     setIsSubmitting(true);
-    setMessage(null);
 
     let uploadedImageUrl = imageUrl;
     
@@ -108,7 +107,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
         const data = await res.json();
         uploadedImageUrl = data.secure_url;
       } catch (err: any) {
-        setMessage({ text: err.message || "Gagal mengunggah foto.", type: "error" });
+        toast.error(err.message || "Gagal mengunggah foto.");
         setIsSubmitting(false);
         return;
       }
@@ -139,7 +138,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
         
         const data = result.data;
         setProducts(products.map((p) => (p.id === isEditingId ? data : p)));
-        setMessage({ text: `Produk "${name}" berhasil diperbarui!`, type: "success" });
+        toast.success(`Produk "${name}" berhasil diperbarui!`);
       } else {
         // Add API
         const result = await safeFetchJson<Product>("/api/products", {
@@ -151,11 +150,11 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
 
         const data = result.data;
         setProducts([...products, data]);
-        setMessage({ text: `Produk "${name}" berhasil ditambahkan!`, type: "success" });
+        toast.success(`Produk "${name}" berhasil ditambahkan!`);
       }
       resetForm();
     } catch (err: any) {
-      setMessage({ text: err.message || "Terjadi kesalahan koneksi server.", type: "error" });
+      toast.error(err.message || "Terjadi kesalahan koneksi server.");
     } finally {
       setIsSubmitting(false);
     }
@@ -172,10 +171,10 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
         throw new Error(data.error || "Gagal menghapus produk.");
       }
       setProducts(products.filter((p) => p.id !== id));
-      setMessage({ text: `Produk "${productName}" berhasil dihapus.`, type: "success" });
+      toast.success(`Produk "${productName}" berhasil dihapus.`);
       if (isEditingId === id) resetForm();
     } catch (err: any) {
-      setMessage({ text: err.message || "Gagal melakukan penghapusan.", type: "error" });
+      toast.error(err.message || "Gagal melakukan penghapusan.");
     }
   };
 
@@ -246,20 +245,6 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
               </button>
             )}
           </div>
-
-          {/* Feedback Message */}
-          {message && (
-            <div
-              className={cn(
-                "p-4 rounded-2xl text-xs font-semibold font-poppins border",
-                message.type === "success"
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                  : "bg-destructive/10 border-destructive/20 text-destructive"
-              )}
-            >
-              {message.text}
-            </div>
-          )}
 
           {/* Form fields */}
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -398,8 +383,9 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground text-sm font-semibold font-poppins py-3 rounded-xl shadow-sm transition-all cursor-pointer mt-2"
+              className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/80 disabled:opacity-50 text-primary-foreground text-sm font-semibold font-poppins py-3 rounded-xl shadow-sm transition-all cursor-pointer mt-2"
             >
+              {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {isSubmitting ? "Menyimpan..." : isEditingId ? "Simpan Perubahan" : "Tambah Produk"}
             </button>
           </form>
@@ -411,7 +397,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
             <h2 className="font-bold text-lg font-poppins text-foreground">Daftar Produk Terdaftar</h2>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-muted/40 border-b border-border/60 text-xs text-muted-foreground font-poppins uppercase">
                 <tr>
@@ -474,6 +460,55 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Cards List */}
+          <div className="md:hidden divide-y divide-border/40">
+            {products.length === 0 ? (
+              <div className="text-center py-10 text-muted-foreground text-xs">
+                Tidak ada produk dalam database.
+              </div>
+            ) : (
+              products.map((product) => (
+                <div key={product.id} className="p-4 flex gap-4 hover:bg-muted/10 transition-colors">
+                  <div className="flex-shrink-0">
+                    {product.imageUrl ? (
+                      <img src={product.imageUrl} alt={product.name} className="h-16 w-16 object-cover rounded-xl border border-border/50 shadow-sm" />
+                    ) : (
+                      <div className="h-16 w-16 bg-muted rounded-xl flex items-center justify-center text-3xl border border-border/50 shadow-sm">
+                        {product.emoji}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <p className="font-bold text-foreground line-clamp-1">{product.name}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] bg-primary/5 text-primary font-semibold font-poppins px-2 py-0.5 rounded-full uppercase tracking-wider">
+                        {product.category}
+                      </span>
+                      <p className="font-semibold text-primary text-sm">{formatPrice(product.price)}</p>
+                    </div>
+                    <div className="flex items-center justify-between pt-2">
+                      <p className="text-xs text-muted-foreground line-clamp-1">By: {product.craftsman}</p>
+                      <div className="flex items-center space-x-1">
+                        <button
+                          onClick={() => handleEditClick(product)}
+                          className="p-1.5 text-primary hover:bg-primary/10 rounded-md transition-colors"
+                        >
+                          <Edit2 className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(product.id, product.name)}
+                          className="p-1.5 text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

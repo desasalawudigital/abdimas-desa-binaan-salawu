@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import Script from "next/script";
 import Chatbot from "@/components/Chatbot";
+import { Toaster } from "sonner";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -56,6 +57,7 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning>
         {children}
+        <Toaster position="top-center" richColors theme="light" />
         <Chatbot />
       </body>
     </html>
