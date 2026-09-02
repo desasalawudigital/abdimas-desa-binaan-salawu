@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       price: Number(body.price),
       desc: body.desc || "",
       emoji: body.emoji || "📦",
-      imageUrl: body.imageUrl,
+      imageUrl: body.imageUrl || "",
       stock: Number(body.stock) || 0,
       dimensions: body.dimensions || "",
       craftsman: body.craftsman || "",
@@ -39,9 +39,10 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(newProduct, { status: 201 });
-  } catch {
+  } catch (err: any) {
+    console.error("Error in POST /api/products:", err);
     return NextResponse.json(
-      { error: "Permintaan data tidak valid." },
+      { error: err?.message || "Permintaan data tidak valid." },
       { status: 400 }
     );
   }

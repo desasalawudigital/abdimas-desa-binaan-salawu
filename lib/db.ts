@@ -40,6 +40,17 @@ function isFirebaseConfigured(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID);
 }
 
+// Remove undefined values to prevent Firestore setDoc invalid data errors
+function sanitizeFirestoreData<T extends object>(data: T): Record<string, any> {
+  const clean: Record<string, any> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (value !== undefined) {
+      clean[key] = value;
+    }
+  }
+  return clean;
+}
+
 // Fallback JSON operations
 async function getLocalProducts(): Promise<Product[]> {
   try {
@@ -98,7 +109,7 @@ export async function getProducts(): Promise<Product[]> {
       if (localProducts.length > 0) {
         console.log("Seeding Firestore products collection from local JSON...");
         for (const prod of localProducts) {
-          await setDoc(doc(db, "products", prod.id), prod);
+          await setDoc(doc(db, "products", prod.id), sanitizeFirestoreData(prod));
         }
         return localProducts;
       }
@@ -115,12 +126,12 @@ export async function saveProducts(products: Product[]): Promise<boolean> {
   if (isFirebaseConfigured()) {
     try {
       for (const prod of products) {
-        await setDoc(doc(db, "products", prod.id), prod);
+        await setDoc(doc(db, "products", prod.id), sanitizeFirestoreData(prod));
       }
       return true;
     } catch (error) {
       console.error("Firestore saveProducts error:", error);
-      return false;
+      return saveLocalProducts(products);
     }
   }
   return saveLocalProducts(products);
@@ -152,11 +163,10 @@ export async function addProduct(product: Omit<Product, "id">): Promise<Product 
 
   if (isFirebaseConfigured()) {
     try {
-      await setDoc(doc(db, "products", newId), newProduct);
+      await setDoc(doc(db, "products", newId), sanitizeFirestoreData(newProduct));
       return newProduct;
     } catch (error) {
-      console.error("Firestore addProduct error:", error);
-      return null;
+      console.error("Firestore addProduct error, falling back to local storage:", error);
     }
   }
 
@@ -178,11 +188,10 @@ export async function updateProduct(id: string, updatedFields: Partial<Product>)
 
   if (isFirebaseConfigured()) {
     try {
-      await setDoc(doc(db, "products", id), updatedProduct);
+      await setDoc(doc(db, "products", id), sanitizeFirestoreData(updatedProduct));
       return updatedProduct;
     } catch (error) {
-      console.error("Firestore updateProduct error:", error);
-      return null;
+      console.error("Firestore updateProduct error, falling back to local storage:", error);
     }
   }
 
@@ -198,8 +207,7 @@ export async function deleteProduct(id: string): Promise<boolean> {
       await deleteDoc(doc(db, "products", id));
       return true;
     } catch (error) {
-      console.error("Firestore deleteProduct error:", error);
-      return false;
+      console.error("Firestore deleteProduct error, falling back to local storage:", error);
     }
   }
 
@@ -224,7 +232,7 @@ export async function getVisits(): Promise<Visit[]> {
       if (localVisits.length > 0) {
         console.log("Seeding Firestore visits collection from local JSON...");
         for (const v of localVisits) {
-          await setDoc(doc(db, "visits", v.id), v);
+          await setDoc(doc(db, "visits", v.id), sanitizeFirestoreData(v));
         }
         return localVisits;
       }
@@ -241,12 +249,12 @@ export async function saveVisits(visits: Visit[]): Promise<boolean> {
   if (isFirebaseConfigured()) {
     try {
       for (const v of visits) {
-        await setDoc(doc(db, "visits", v.id), v);
+        await setDoc(doc(db, "visits", v.id), sanitizeFirestoreData(v));
       }
       return true;
     } catch (error) {
       console.error("Firestore saveVisits error:", error);
-      return false;
+      return saveLocalVisits(visits);
     }
   }
   return saveLocalVisits(visits);
@@ -278,11 +286,10 @@ export async function addVisit(visit: Omit<Visit, "id">): Promise<Visit | null> 
 
   if (isFirebaseConfigured()) {
     try {
-      await setDoc(doc(db, "visits", newId), newVisit);
+      await setDoc(doc(db, "visits", newId), sanitizeFirestoreData(newVisit));
       return newVisit;
     } catch (error) {
-      console.error("Firestore addVisit error:", error);
-      return null;
+      console.error("Firestore addVisit error, falling back to local storage:", error);
     }
   }
 
@@ -304,11 +311,10 @@ export async function updateVisit(id: string, updatedFields: Partial<Visit>): Pr
 
   if (isFirebaseConfigured()) {
     try {
-      await setDoc(doc(db, "visits", id), updatedVisit);
+      await setDoc(doc(db, "visits", id), sanitizeFirestoreData(updatedVisit));
       return updatedVisit;
     } catch (error) {
-      console.error("Firestore updateVisit error:", error);
-      return null;
+      console.error("Firestore updateVisit error, falling back to local storage:", error);
     }
   }
 
@@ -324,8 +330,7 @@ export async function deleteVisit(id: string): Promise<boolean> {
       await deleteDoc(doc(db, "visits", id));
       return true;
     } catch (error) {
-      console.error("Firestore deleteVisit error:", error);
-      return false;
+      console.error("Firestore deleteVisit error, falling back to local storage:", error);
     }
   }
 
