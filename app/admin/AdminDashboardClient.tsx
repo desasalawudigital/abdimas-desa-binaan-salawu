@@ -5,8 +5,6 @@ import { Plus, Edit2, Trash2, X, RefreshCw, Layers, Users, Box } from "lucide-re
 import { Product } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { compressImage, safeFetchJson } from "@/lib/image-compression";
-import { storage } from "@/lib/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 interface Props {
   initialProducts: Product[];
@@ -93,14 +91,24 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
       try {
         const fileToUpload = await compressImage(imageFile);
         
-        const filename = `${Date.now()}_${fileToUpload.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-        const storageRef = ref(storage, `uploads/${filename}`);
-        const metadata = { contentType: fileToUpload.type || "image/jpeg" };
+        const formData = new FormData();
+        formData.append("file", fileToUpload);
+        formData.append("upload_preset", "abdimas_desa");
         
-        await uploadBytes(storageRef, fileToUpload, metadata);
-        uploadedImageUrl = await getDownloadURL(storageRef);
+        const res = await fetch("https://api.cloudinary.com/v1_1/nyc6iwek/image/upload", {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!res.ok) {
+           const errData = await res.json();
+           throw new Error(errData.error?.message || "Gagal mengunggah foto ke Cloudinary.");
+        }
+        
+        const data = await res.json();
+        uploadedImageUrl = data.secure_url;
       } catch (err: any) {
-        setMessage({ text: err.message || "Gagal mengunggah foto ke Firebase.", type: "error" });
+        setMessage({ text: err.message || "Gagal mengunggah foto.", type: "error" });
         setIsSubmitting(false);
         return;
       }
