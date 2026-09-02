@@ -11,6 +11,18 @@ function isFirebaseConfigured(): boolean {
 }
 
 export async function getCredentials() {
+  const defaultPassword = process.env.ADMIN_PASSWORD || "admin123";
+  let hashedPassword = "";
+  try {
+    hashedPassword = await bcrypt.hash(defaultPassword, 10);
+  } catch {
+    hashedPassword = "$2b$10$H7HjvWfCRRI1Qrao6kz.Xe8isxtQvolXtf61IP.E5LCrjvixFDFIe";
+  }
+  const defaultAuth = {
+    username: process.env.ADMIN_USERNAME || "admin",
+    password: hashedPassword,
+  };
+
   if (isFirebaseConfigured()) {
     try {
       const docRef = doc(db, "auth", "credentials");
@@ -18,63 +30,32 @@ export async function getCredentials() {
       if (docSnap.exists()) {
         const creds = docSnap.data() as { username: string; password?: string };
         if (creds.password && !creds.password.startsWith("$2")) {
-          const hashedPassword = await bcrypt.hash(creds.password, 10);
-          creds.password = hashedPassword;
-          await setDoc(docRef, creds);
+          const hp = await bcrypt.hash(creds.password, 10);
+          creds.password = hp;
+          try { await setDoc(docRef, creds); } catch {}
         }
         return creds;
       }
 
-      // If document doesn't exist, seed default creds
-      const defaultPassword = process.env.ADMIN_PASSWORD || "admin123";
-      const hashedPassword = await bcrypt.hash(defaultPassword, 10);
-      const defaultAuth = {
-        username: process.env.ADMIN_USERNAME || "admin",
-        password: hashedPassword,
-      };
-      await setDoc(docRef, defaultAuth);
+      // If document doesn't exist, seed default creds safely
+      try {
+        await setDoc(docRef, defaultAuth);
+      } catch (seedErr) {
+        console.error("Firestore seed credentials error:", seedErr);
+      }
       return defaultAuth;
     } catch (error) {
-      console.error("Firestore getCredentials error, falling back to local file:", error);
+      console.error("Firestore getCredentials error, falling back:", error);
     }
   }
 
-  // Fallback to local JSON file
+  // Fallback to local JSON file or defaultAuth
   try {
     const data = await fs.readFile(AUTH_PATH, "utf-8");
     const creds = JSON.parse(data);
-    
-    // Auto-migrate plaintext password to bcrypt hash
-    if (creds.password && !creds.password.startsWith("$2")) {
-      console.log("Migrating plaintext password to bcrypt hash...");
-      const hashedPassword = await bcrypt.hash(creds.password, 10);
-      creds.password = hashedPassword;
-      await fs.writeFile(AUTH_PATH, JSON.stringify(creds, null, 2), "utf-8");
-    }
-    
     return creds;
-  } catch (error: unknown) {
-    if (error && typeof error === "object" && "code" in error && (error as { code: string }).code === "ENOENT") {
-      const defaultPassword = process.env.ADMIN_PASSWORD || "admin123";
-      const hashedPassword = await bcrypt.hash(defaultPassword, 10);
-      
-      const defaultAuth = {
-        username: process.env.ADMIN_USERNAME || "admin",
-        password: hashedPassword,
-      };
-      
-      try {
-        await fs.mkdir(path.dirname(AUTH_PATH), { recursive: true });
-        await fs.writeFile(AUTH_PATH, JSON.stringify(defaultAuth, null, 2), "utf-8");
-      } catch (writeErr) {
-        console.error("Failed to initialize auth.json:", writeErr);
-      }
-      
-      return defaultAuth;
-    }
-    
-    console.error("Error reading auth database:", error);
-    return null;
+  } catch {
+    return defaultAuth;
   }
 }
 
