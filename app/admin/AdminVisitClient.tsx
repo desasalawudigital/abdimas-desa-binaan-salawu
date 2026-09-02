@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Plus, Edit2, Trash2, X, RefreshCw, MapPin } from "lucide-react";
 import { Visit } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import { compressImage, safeFetchJson } from "@/lib/image-compression";
 
 interface Props {
   initialVisits: Visit[];
@@ -62,15 +63,19 @@ export default function AdminVisitClient({ initialVisits }: Props) {
     // Upload file if selected
     if (imageFile) {
       try {
+        const fileToUpload = await compressImage(imageFile);
         const formData = new FormData();
-        formData.append("file", imageFile);
-        const uploadRes = await fetch("/api/upload", {
+        formData.append("file", fileToUpload);
+
+        const result = await safeFetchJson<{ url: string }>("/api/upload", {
           method: "POST",
           body: formData,
         });
-        const uploadData = await uploadRes.json();
-        if (!uploadRes.ok) throw new Error(uploadData.error || "Gagal mengunggah foto.");
-        uploadedImageUrl = uploadData.url;
+
+        if (!result.ok || !result.data) {
+          throw new Error(result.error || "Gagal mengunggah foto.");
+        }
+        uploadedImageUrl = result.data.url;
       } catch (err: unknown) {
         setMessage({ text: err instanceof Error ? err.message : "Gagal mengunggah foto.", type: "error" });
         setIsSubmitting(false);

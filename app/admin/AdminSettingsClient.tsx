@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Save, RefreshCw, Globe, Phone, Mail, MapPin, Video, Upload } from "lucide-react";
+import { safeFetchJson } from "@/lib/image-compression";
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -117,19 +118,20 @@ export default function AdminSettingsClient() {
     setIsUploadingVideo(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      const res = await fetch("/api/media", {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const result = await safeFetchJson<{ url: string }>("/api/media", {
         method: "POST",
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Gagal mengunggah video");
+      if (!result.ok || !result.data) {
+        throw new Error(result.error || "Gagal mengunggah video");
+      }
 
-      const data = await res.json();
-      setSettings(prev => ({ ...prev, hero_video_url: data.url, hero_video_type: "local" }));
+      setSettings(prev => ({ ...prev, hero_video_url: result.data!.url, hero_video_type: "local" }));
     } catch (err: any) {
       setError(err.message);
     } finally {

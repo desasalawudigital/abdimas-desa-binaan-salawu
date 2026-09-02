@@ -4,6 +4,7 @@ import React, { useState, useMemo } from "react";
 import { Plus, Edit2, Trash2, X, RefreshCw, Layers, Users, Box } from "lucide-react";
 import { Product } from "@/lib/db";
 import { cn } from "@/lib/utils";
+import { compressImage, safeFetchJson } from "@/lib/image-compression";
 
 interface Props {
   initialProducts: Product[];
@@ -88,15 +89,19 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
     // Upload file if selected
     if (imageFile) {
       try {
+        const fileToUpload = await compressImage(imageFile);
         const formData = new FormData();
-        formData.append("file", imageFile);
-        const uploadRes = await fetch("/api/upload", {
+        formData.append("file", fileToUpload);
+        
+        const result = await safeFetchJson<{ url: string }>("/api/upload", {
           method: "POST",
           body: formData,
         });
-        const uploadData = await uploadRes.json();
-        if (!uploadRes.ok) throw new Error(uploadData.error || "Gagal mengunggah foto.");
-        uploadedImageUrl = uploadData.url;
+
+        if (!result.ok || !result.data) {
+          throw new Error(result.error || "Gagal mengunggah foto.");
+        }
+        uploadedImageUrl = result.data.url;
       } catch (err: any) {
         setMessage({ text: err.message, type: "error" });
         setIsSubmitting(false);
@@ -120,26 +125,26 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
     try {
       if (isEditingId) {
         // Update API
-        const res = await fetch(`/api/products/${isEditingId}`, {
+        const result = await safeFetchJson<Product>(`/api/products/${isEditingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Gagal memperbarui produk.");
+        if (!result.ok || !result.data) throw new Error(result.error || "Gagal memperbarui produk.");
         
+        const data = result.data;
         setProducts(products.map((p) => (p.id === isEditingId ? data : p)));
         setMessage({ text: `Produk "${name}" berhasil diperbarui!`, type: "success" });
       } else {
         // Add API
-        const res = await fetch("/api/products", {
+        const result = await safeFetchJson<Product>("/api/products", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Gagal menambahkan produk.");
+        if (!result.ok || !result.data) throw new Error(result.error || "Gagal menambahkan produk.");
 
+        const data = result.data;
         setProducts([...products, data]);
         setMessage({ text: `Produk "${name}" berhasil ditambahkan!`, type: "success" });
       }

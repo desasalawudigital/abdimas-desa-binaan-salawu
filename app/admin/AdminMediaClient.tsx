@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Image as ImageIcon, Copy, Check, RefreshCw, Trash2, Plus, X, Upload, Pencil, Video } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { compressImage, safeFetchJson } from "@/lib/image-compression";
 
 const YoutubeIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -62,18 +63,21 @@ export default function AdminMediaClient() {
     setIsUploading(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      const res = await fetch("/api/media", {
+      const fileToUpload = await compressImage(file);
+      const formData = new FormData();
+      formData.append("file", fileToUpload);
+
+      const result = await safeFetchJson<{ url: string }>("/api/media", {
         method: "POST",
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Gagal mengunggah foto");
+      if (!result.ok || !result.data) {
+        throw new Error(result.error || "Gagal mengunggah foto");
+      }
 
-      const data = await res.json();
+      const data = result.data;
       
       // Update available media
       setAvailableMedia(prev => [...prev, data.url]);
