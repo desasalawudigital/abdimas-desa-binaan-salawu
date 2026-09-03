@@ -9,14 +9,13 @@ import BudayaWisataSection from "@/components/sections/BudayaWisataSection";
 import { Leaf, ShieldCheck, Award, Heart, ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getProducts, getVisits, getSettings } from "@/lib/db";
+import { getVisits, getSettings } from "@/lib/db";
 
 export const revalidate = 0;
 
 export default async function Home() {
-  const products = await getProducts();
   const visits = await getVisits();
-  let settings: any = {};
+  let settings: Record<string, string> = {};
   
   try {
     settings = await getSettings();

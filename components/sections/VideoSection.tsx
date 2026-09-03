@@ -1,6 +1,4 @@
 import React from "react";
-import fs from "fs";
-import path from "path";
 
 const getYoutubeVideoId = (url: string) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;

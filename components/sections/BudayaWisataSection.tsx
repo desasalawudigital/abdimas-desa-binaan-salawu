@@ -1,7 +1,5 @@
 import React from "react";
-import { Compass, Camera, Sparkles, MapPin } from "lucide-react";
-import fs from "fs";
-import path from "path";
+import { Compass, Camera, MapPin } from "lucide-react";
 
 interface AlamBudayaItem {
   url: string;
@@ -13,7 +11,7 @@ import { getGalleries, getSettings } from "@/lib/db";
 
 export default async function BudayaWisataSection() {
   let alamBudayaImages: AlamBudayaItem[] = [];
-  let settings: any = {};
+  let settings: Record<string, string> = {};
   
   try {
     settings = await getSettings();

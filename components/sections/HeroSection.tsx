@@ -1,10 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, ShoppingBag, MapPin, ShoppingCart } from "lucide-react";
+import { ArrowRight, MapPin, ShoppingCart } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import fs from "fs";
-import path from "path";
 
 interface MediaItemWithMeta {
   url: string;
@@ -21,7 +19,7 @@ export default async function HeroSection() {
   let alamBudayaCount = 0;
   let productsCount = 0;
   let craftsmenCount = 0;
-  let settings: any = {};
+  let settings: Record<string, string> = {};
 
   try {
     settings = await getSettings();
