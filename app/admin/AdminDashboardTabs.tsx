@@ -8,7 +8,6 @@ import AdminAiClient from "./AdminAiClient";
 import AdminMediaClient from "./AdminMediaClient";
 import AdminSettingsClient from "./AdminSettingsClient";
 import AdminWebContentClient from "./AdminWebContentClient";
-import AdminProfilClient from "./AdminProfilClient";
 import { Product, Visit } from "@/lib/db";
 import { cn } from "@/lib/utils";
 import { Settings, FileText } from "lucide-react";
@@ -19,7 +18,7 @@ interface Props {
 }
 
 export default function AdminDashboardTabs({ initialProducts, initialVisits }: Props) {
-  const [activeTab, setActiveTab] = useState<"products" | "visits" | "ai" | "media" | "settings" | "web-content" | "profil">("products");
+  const [activeTab, setActiveTab] = useState<"products" | "visits" | "ai" | "media" | "settings" | "web-content">("products");
 
   return (
     <div className="space-y-6">
@@ -69,17 +68,7 @@ export default function AdminDashboardTabs({ initialProducts, initialVisits }: P
         >
           <FileText className="h-4 w-4" /> Konten Teks
         </button>
-        <button
-          onClick={() => setActiveTab("profil")}
-          className={cn(
-            "flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-semibold font-poppins transition-all",
-            activeTab === "profil"
-              ? "bg-background text-foreground shadow-sm border border-border/50"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-          )}
-        >
-          <FileText className="h-4 w-4" /> Profil Desa
-        </button>
+
         <button
           onClick={() => setActiveTab("settings")}
           className={cn(
@@ -110,7 +99,6 @@ export default function AdminDashboardTabs({ initialProducts, initialVisits }: P
         {activeTab === "visits" && <AdminVisitClient initialVisits={initialVisits} />}
         {activeTab === "media" && <AdminMediaClient />}
         {activeTab === "web-content" && <AdminWebContentClient />}
-        {activeTab === "profil" && <AdminProfilClient />}
         {activeTab === "settings" && <AdminSettingsClient />}
         {activeTab === "ai" && <AdminAiClient products={initialProducts} />}
       </div>
