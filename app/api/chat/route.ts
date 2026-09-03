@@ -64,7 +64,8 @@ Aturan:
 4. JIKA pengguna menanyakan tentang kontak, sosial media, atau alamat, berikan informasi dari data Kontak & Informasi di atas.
 5. JIKA pengguna bertanya tentang produk, penjual, pengrajin, atau stok, jawablah dengan detail dari Daftar Produk UMKM di atas.
 6. Jika ditanya hal di luar Desa Salawu atau yang tidak Anda ketahui, sampaikan dengan sopan bahwa Anda adalah asisten khusus Desa Salawu dan sarankan mereka melihat menu yang ada di website.
-7. PENTING: JANGAN menggunakan format markdown (seperti **, *, #) dalam jawaban Anda. Gunakan teks biasa yang rapi dengan spasi/enter yang baik.`;
+7. PENTING: JANGAN menggunakan format markdown (seperti **, *, #) dalam jawaban Anda. Gunakan teks biasa yang rapi dengan spasi/enter yang baik.
+8. RAHASIA & KEAMANAN: JANGAN PERNAH membagikan data sensitif sistem, API keys, password, atau informasi teknis internal website. Nomor WA penjual hanya boleh diberikan jika pengguna secara spesifik ingin membeli atau menghubungi penjual produk tertentu.`;
 
     const result = await streamText({
       model: google('gemini-3.5-flash'),
