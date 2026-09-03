@@ -83,7 +83,8 @@ export default function Footer() {
     whatsapp: "",
     email: "",
     address: "",
-    gmaps_link: ""
+    gmaps_link: "",
+    footer_desc: ""
   });
 
   useEffect(() => {
@@ -92,7 +93,7 @@ export default function Footer() {
         .then(res => res.json())
         .then(data => {
           if (data && !data.error) {
-            setSettings(data);
+            setSettings(prev => ({...prev, ...data}));
           }
         })
         .catch(err => console.error("Failed to load settings:", err));
@@ -114,8 +115,8 @@ export default function Footer() {
               <span className="text-2xl font-bold font-poppins text-background">
                 Desa<span className="text-secondary">Salawu</span>
               </span>
-              <p className="text-background/70 text-sm leading-relaxed">
-                Website resmi Desa Salawu. Media publikasi hasil kegiatan wisata lokal, promosi produk unggulan UMKM kerajinan bambu, dan pesona wisata budaya lokal.
+              <p className="text-background/70 text-sm leading-relaxed whitespace-pre-wrap">
+                {settings.footer_desc || "Website resmi Desa Salawu. Media publikasi hasil kegiatan wisata lokal, promosi produk unggulan UMKM kerajinan bambu, dan pesona wisata budaya lokal."}
               </p>
             </div>
             

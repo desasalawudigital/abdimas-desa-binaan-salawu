@@ -386,7 +386,15 @@ export async function getSettings(): Promise<any> {
   const defaultSettings = {
     instagram: "", facebook: "", tiktok: "", x_twitter: "", youtube: "",
     website: "", whatsapp: "", email: "", address: "", gmaps_link: "",
-    hero_video_type: "none", hero_video_url: ""
+    hero_video_type: "none", hero_video_url: "",
+    hero_desc: "Menghubungkan warisan kerajinan bambu tradisional, keindahan alam pegunungan, dan kearifan lokal Desa Salawu dengan ekosistem digital untuk kesejahteraan masyarakat berkelanjutan.",
+    about_title: "Membangun Kemandirian Ekonomi Melalui Warisan Tradisi",
+    about_desc_1: "Desa Salawu, Tasikmalaya merupakan salah satu daerah penghasil kriya anyaman bambu tertua di Jawa Barat. Keahlian ini telah diwariskan dari generasi ke generasi, menjadikan bambu sebagai urat nadi perekonomian masyarakat.",
+    about_desc_2: "Melalui program pendampingan digitalisasi ini, kami berkomitmen mendukung para pengrajin dalam bertransformasi secara digital. Tujuan utama kami adalah meningkatkan daya saing UMKM lokal, melestarikan warisan seni budaya, dan memperkenalkan potensi wisata alam Salawu ke khalayak luas.",
+    visit_desc: "Momen-momen indah saat menjelajahi potensi wisata alam, interaksi sosial dengan warga, dan keunikan produk kerajinan lokal Desa Salawu.",
+    culture_desc: "Dari keasrian pegunungan Priangan Timur hingga harmoni irama bambu tradisional yang terjaga lestari secara turun-temurun.",
+    cta_title: "Ingin Berwisata Edukasi ke Desa Salawu?",
+    cta_desc: "Kami siap memandu rombongan wisatawan, institusi pendidikan, maupun jurnalis yang tertarik mengkaji industri kerajinan bambu lokal serta ekowisata alam. Hubungi tim sekretariat desa untuk koordinasi kunjungan."
   };
   try {
     const settingsPath = path.join(process.cwd(), "data", "settings.json");

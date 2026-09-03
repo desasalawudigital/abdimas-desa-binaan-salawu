@@ -9,10 +9,17 @@ interface AlamBudayaItem {
   desc: string;
 }
 
-import { getGalleries } from "@/lib/db";
+import { getGalleries, getSettings } from "@/lib/db";
 
 export default async function BudayaWisataSection() {
   let alamBudayaImages: AlamBudayaItem[] = [];
+  let settings: any = {};
+  
+  try {
+    settings = await getSettings();
+  } catch (e) {
+    console.error("Failed to load settings:", e);
+  }
   try {
     const data = await getGalleries();
     alamBudayaImages = data?.alam_budaya || [];
@@ -35,8 +42,8 @@ export default async function BudayaWisataSection() {
             </h2>
           </div>
           <div className="lg:col-span-4 lg:text-right">
-            <p className="text-muted-foreground text-sm font-sans max-w-sm ml-auto">
-              Dari keasrian pegunungan Priangan Timur hingga harmoni irama bambu tradisional yang terjaga lestari secara turun-temurun.
+            <p className="text-muted-foreground text-sm font-sans max-w-sm ml-auto whitespace-pre-wrap">
+              {settings.culture_desc || "Dari keasrian pegunungan Priangan Timur hingga harmoni irama bambu tradisional yang terjaga lestari secara turun-temurun."}
             </p>
           </div>
         </div>
@@ -94,11 +101,11 @@ export default async function BudayaWisataSection() {
               <Camera className="h-3.5 w-3.5 text-secondary" />
               <span>Dukungan Desa Wisata</span>
             </div>
-            <h3 className="text-2xl md:text-3xl font-bold font-poppins tracking-tight">
-              Ingin Berwisata Edukasi ke Desa Salawu?
+            <h3 className="text-2xl md:text-3xl font-bold font-poppins tracking-tight whitespace-pre-wrap">
+              {settings.cta_title || "Ingin Berwisata Edukasi ke Desa Salawu?"}
             </h3>
-            <p className="text-white/80 text-sm leading-relaxed font-sans">
-              Kami siap memandu rombongan wisatawan, institusi pendidikan, maupun jurnalis yang tertarik mengkaji industri kerajinan bambu lokal serta ekowisata alam. Hubungi tim sekretariat desa untuk koordinasi kunjungan.
+            <p className="text-white/80 text-sm leading-relaxed font-sans whitespace-pre-wrap">
+              {settings.cta_desc || "Kami siap memandu rombongan wisatawan, institusi pendidikan, maupun jurnalis yang tertarik mengkaji industri kerajinan bambu lokal serta ekowisata alam. Hubungi tim sekretariat desa untuk koordinasi kunjungan."}
             </p>
           </div>
         </div>

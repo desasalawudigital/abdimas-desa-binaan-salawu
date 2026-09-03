@@ -14,13 +14,20 @@ interface MediaItemWithMeta {
 
 
 
-import { getGalleries, getProducts } from "@/lib/db";
+import { getGalleries, getProducts, getSettings } from "@/lib/db";
 
 export default async function HeroSection() {
   let heroImage: MediaItemWithMeta | null = null;
   let alamBudayaCount = 0;
   let productsCount = 0;
   let craftsmenCount = 0;
+  let settings: any = {};
+
+  try {
+    settings = await getSettings();
+  } catch (e) {
+    console.error("Failed to load settings:", e);
+  }
 
   try {
     const data = await getGalleries();
@@ -66,8 +73,8 @@ export default async function HeroSection() {
             UMKM Desa Salawu
           </h1>
 
-          <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans">
-            Menghubungkan warisan kerajinan bambu tradisional, keindahan alam pegunungan, dan kearifan lokal Desa Salawu dengan ekosistem digital untuk kesejahteraan masyarakat berkelanjutan.
+          <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans whitespace-pre-wrap">
+            {settings.hero_desc || "Menghubungkan warisan kerajinan bambu tradisional, keindahan alam pegunungan, dan kearifan lokal Desa Salawu dengan ekosistem digital untuk kesejahteraan masyarakat berkelanjutan."}
           </p>
 
           {/* Quick Statistics */}

@@ -2,7 +2,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-export default function KunjunganWisataSection({ images = [] }: { images?: string[] }) {
+interface Props {
+  images?: string[];
+  visitDesc?: string;
+}
+
+export default function KunjunganWisataSection({ images = [], visitDesc }: Props) {
   const defaultImages = Array.from({ length: 10 }, (_, i) => `/kunjungan/kunjungan_${i + 1}.jpeg`);
   const finalImages = images.length > 0 ? images : defaultImages;
   
@@ -62,17 +67,21 @@ export default function KunjunganWisataSection({ images = [] }: { images?: strin
   };
 
   return (
-    <section id="kunjungan-wisata" className="py-24 bg-muted/10 border-t border-border/40 overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6 mb-16">
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="text-sm font-semibold text-primary tracking-wider uppercase font-poppins">
+    <section id="kunjungan-wisata" className="py-24 bg-gradient-to-b from-background to-muted/20 border-t border-border/40 overflow-hidden relative">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-secondary/5 rounded-l-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-0 w-1/4 h-1/2 bg-primary/5 rounded-tr-full blur-3xl -z-10" />
+      
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
+          <span className="text-sm font-semibold text-secondary tracking-wider uppercase font-poppins">
             DOKUMENTASI DESA
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-poppins text-foreground tracking-tight leading-tight">
+          <h2 className="text-3xl md:text-5xl font-bold font-poppins text-foreground tracking-tight leading-tight">
             Kunjungan Wisata Salawu
           </h2>
-          <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans">
-            Momen-momen indah saat menjelajahi potensi wisata alam, interaksi sosial dengan warga, dan keunikan produk kerajinan lokal Desa Salawu.
+          <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans whitespace-pre-wrap">
+            {visitDesc || "Momen-momen indah saat menjelajahi potensi wisata alam, interaksi sosial dengan warga, dan keunikan produk kerajinan lokal Desa Salawu."}
           </p>
         </div>
       </div>

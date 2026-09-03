@@ -9,13 +9,20 @@ import BudayaWisataSection from "@/components/sections/BudayaWisataSection";
 import { Leaf, ShieldCheck, Award, Heart, ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getProducts, getVisits } from "@/lib/db";
+import { getProducts, getVisits, getSettings } from "@/lib/db";
 
 export const revalidate = 0;
 
 export default async function Home() {
   const products = await getProducts();
   const visits = await getVisits();
+  let settings: any = {};
+  
+  try {
+    settings = await getSettings();
+  } catch (e) {
+    console.error("Failed to load settings on homepage:", e);
+  }
   
   // Extract images from visits that have imageUrl
   const visitImages = visits
@@ -90,18 +97,30 @@ export default async function Home() {
                   <span className="text-sm font-semibold text-primary tracking-wider uppercase font-poppins">
                     Nilai Luhur Desa
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold font-poppins text-foreground tracking-tight leading-tight">
-                    Membangun Kemandirian Ekonomi Melalui Warisan Tradisi
+                  <h2 className="text-3xl md:text-4xl font-bold font-poppins text-foreground tracking-tight leading-tight whitespace-pre-wrap">
+                    {settings.about_title || "Membangun Kemandirian Ekonomi Melalui Warisan Tradisi"}
                   </h2>
                 </div>
                 
-                <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans">
-                  Desa Salawu, Tasikmalaya merupakan salah satu daerah penghasil kriya anyaman bambu tertua di Jawa Barat. Keahlian ini telah diwariskan dari generasi ke generasi, menjadikan bambu sebagai urat nadi perekonomian masyarakat.
-                </p>
+                {settings.about_desc_1 ? (
+                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans whitespace-pre-wrap">
+                    {settings.about_desc_1}
+                  </p>
+                ) : (
+                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans">
+                    Desa Salawu, Tasikmalaya merupakan salah satu daerah penghasil kriya anyaman bambu tertua di Jawa Barat. Keahlian ini telah diwariskan dari generasi ke generasi, menjadikan bambu sebagai urat nadi perekonomian masyarakat.
+                  </p>
+                )}
 
-                <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans">
-                  Melalui program pendampingan digitalisasi ini, kami berkomitmen mendukung para pengrajin dalam bertransformasi secara digital. Tujuan utama kami adalah meningkatkan daya saing UMKM lokal, melestarikan warisan seni budaya, dan memperkenalkan potensi wisata alam Salawu ke khalayak luas.
-                </p>
+                {settings.about_desc_2 ? (
+                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans whitespace-pre-wrap">
+                    {settings.about_desc_2}
+                  </p>
+                ) : (
+                  <p className="text-muted-foreground text-sm md:text-base leading-relaxed font-sans">
+                    Melalui program pendampingan digitalisasi ini, kami berkomitmen mendukung para pengrajin dalam bertransformasi secara digital. Tujuan utama kami adalah meningkatkan daya saing UMKM lokal, melestarikan warisan seni budaya, dan memperkenalkan potensi wisata alam Salawu ke khalayak luas.
+                  </p>
+                )}
 
                 <div className="pt-2">
                   <Link 
@@ -129,7 +148,7 @@ export default async function Home() {
         </section>
 
         {/* Kunjungan Wisata Showcase Section */}
-        <KunjunganWisataSection images={visitImages} />
+        <KunjunganWisataSection images={visitImages} visitDesc={settings.visit_desc} />
 
         {/* Wisata & Budaya Section */}
         <BudayaWisataSection />
