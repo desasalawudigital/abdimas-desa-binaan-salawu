@@ -82,6 +82,7 @@ export default async function HeroSection() {
               href="/products"
               className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full sm:w-auto rounded-full group font-semibold")}
             >
+              <ShoppingBag className="mr-2 h-4 w-4" />
               Lihat Katalog UMKM
               <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
