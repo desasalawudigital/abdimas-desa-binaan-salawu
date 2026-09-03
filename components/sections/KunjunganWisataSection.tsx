@@ -2,10 +2,12 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
-export default function KunjunganWisataSection() {
-  const images = Array.from({ length: 10 }, (_, i) => `/kunjungan/kunjungan_${i + 1}.jpeg`);
+export default function KunjunganWisataSection({ images = [] }: { images?: string[] }) {
+  const defaultImages = Array.from({ length: 10 }, (_, i) => `/kunjungan/kunjungan_${i + 1}.jpeg`);
+  const finalImages = images.length > 0 ? images : defaultImages;
+  
   // Triplicate images to ensure smooth looping
-  const duplicatedImages = [...images, ...images, ...images];
+  const duplicatedImages = [...finalImages, ...finalImages, ...finalImages];
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);

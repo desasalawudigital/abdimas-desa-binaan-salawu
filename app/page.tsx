@@ -9,12 +9,19 @@ import BudayaWisataSection from "@/components/sections/BudayaWisataSection";
 import { Leaf, ShieldCheck, Award, Heart, ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getProducts } from "@/lib/db";
+import { getProducts, getVisits } from "@/lib/db";
 
 export const revalidate = 0;
 
 export default async function Home() {
   const products = await getProducts();
+  const visits = await getVisits();
+  
+  // Extract images from visits that have imageUrl
+  const visitImages = visits
+    .filter(visit => visit.imageUrl && visit.imageUrl.trim() !== "")
+    .map(visit => visit.imageUrl as string);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header / Navigasi */}
@@ -122,7 +129,7 @@ export default async function Home() {
         </section>
 
         {/* Kunjungan Wisata Showcase Section */}
-        <KunjunganWisataSection />
+        <KunjunganWisataSection images={visitImages} />
 
         {/* Wisata & Budaya Section */}
         <BudayaWisataSection />
