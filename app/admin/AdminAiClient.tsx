@@ -23,6 +23,8 @@ export default function AdminAiClient({ products }: Props) {
   const [imagePreview, setImagePreview] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [manualProductName, setManualProductName] = useState("");
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -56,8 +58,16 @@ export default function AdminAiClient({ products }: Props) {
       setError({ text: "Pilih produk dari database atau unggah foto untuk dianalisis AI." });
       return;
     }
+    
+    if (selectedProductId === "manual" && !manualProductName.trim() && !imageFile) {
+      setError({ text: "Masukkan nama produk atau unggah foto untuk dianalisis AI." });
+      return;
+    }
 
-    const product = products.find(p => p.id === selectedProductId);
+    let product = products.find(p => p.id === selectedProductId);
+    if (selectedProductId === "manual" && manualProductName.trim()) {
+      product = { name: manualProductName, desc: "", price: 0, category: "fashion", emoji: "", id: "manual", stock: 0, dimensions: "", craftsman: "", waNumber: "" } as Product;
+    }
 
     setIsGenerating(true);
     setError(null);
@@ -148,7 +158,17 @@ export default function AdminAiClient({ products }: Props) {
               {products.map(p => (
                 <option key={p.id} value={p.id}>{p.name}</option>
               ))}
+              <option value="manual">-- Ketik Sendiri / Manual --</option>
             </select>
+            {selectedProductId === "manual" && (
+              <input
+                type="text"
+                placeholder="Masukkan nama/jenis produk..."
+                value={manualProductName}
+                onChange={(e) => setManualProductName(e.target.value)}
+                className="w-full mt-2 px-4 py-3 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20 font-medium"
+              />
+            )}
           </div>
 
           <div className="space-y-2">

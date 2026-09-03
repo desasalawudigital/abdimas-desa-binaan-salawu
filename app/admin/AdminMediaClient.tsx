@@ -283,6 +283,13 @@ export default function AdminMediaClient() {
     }
   };
 
+  const [filterCategory, setFilterCategory] = useState<MediaCategory | "all">("all");
+
+  const filteredMediaList = useMemo(() => {
+    if (filterCategory === "all") return mediaList;
+    return mediaList.filter(item => item.category === filterCategory);
+  }, [mediaList, filterCategory]);
+
   return (
     <div className="space-y-10">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -450,11 +457,25 @@ export default function AdminMediaClient() {
 
         {/* List Table Panel */}
         <div className="lg:col-span-7 bg-background border border-border/40 rounded-3xl shadow-sm overflow-hidden">
-          <div className="border-b border-border/60 p-6 flex justify-between items-center">
-            <h2 className="font-bold text-lg font-poppins text-foreground">Daftar Media</h2>
-            <div className="bg-secondary/15 text-secondary-foreground text-xs font-bold px-3 py-1 rounded-full">
-              {mediaList.length} Item
+          <div className="border-b border-border/60 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3">
+              <h2 className="font-bold text-lg font-poppins text-foreground">Daftar Media</h2>
+              <div className="bg-secondary/15 text-secondary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                {filteredMediaList.length} Item
+              </div>
             </div>
+            
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value as MediaCategory | "all")}
+              className="text-xs px-3 py-2 rounded-xl border border-border bg-muted/20 focus:outline-none focus:border-primary cursor-pointer"
+            >
+              <option value="all">Semua Kategori</option>
+              <option value="seni_anyaman">Galeri Seni Anyaman</option>
+              <option value="alam_budaya">Alam & Budaya</option>
+              <option value="hero_image">Foto Utama Beranda</option>
+              <option value="hero_video">Latar Belakang Video</option>
+            </select>
           </div>
 
           <div className="overflow-auto max-h-[600px]">
@@ -470,14 +491,14 @@ export default function AdminMediaClient() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/40 font-sans">
-                  {mediaList.length === 0 ? (
+                  {filteredMediaList.length === 0 ? (
                     <tr>
                       <td colSpan={3} className="text-center py-10 text-muted-foreground text-xs">
                         Tidak ada media.
                       </td>
                     </tr>
                   ) : (
-                    mediaList.map((item) => (
+                    filteredMediaList.map((item) => (
                       <tr key={item.id} className="hover:bg-muted/10 transition-colors">
                         <td className="p-4 text-center">
                            {item.category === "hero_video" && item.videoType === "youtube" ? (
