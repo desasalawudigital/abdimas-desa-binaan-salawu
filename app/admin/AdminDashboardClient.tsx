@@ -13,6 +13,7 @@ interface Props {
 
 export default function AdminDashboardClient({ initialProducts }: Props) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [filterCategory, setFilterCategory] = useState<string>("Semua");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Form Fields State
@@ -378,8 +379,20 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
 
         {/* List Table Panel */}
         <div className="lg:col-span-7 bg-background border border-border/40 rounded-3xl shadow-sm overflow-hidden">
-          <div className="border-b border-border/60 p-6">
+          <div className="border-b border-border/60 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <h2 className="font-bold text-lg font-poppins text-foreground">Daftar Produk Terdaftar</h2>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="w-full sm:w-auto px-4 py-2 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20 cursor-pointer"
+            >
+              <option value="Semua">Semua Kategori</option>
+              <option value="dapur">Peralatan Dapur</option>
+              <option value="dekorasi">Dekorasi Ruang</option>
+              <option value="fashion">Fashion</option>
+              <option value="makanan">Makanan</option>
+              <option value="minuman">Minuman</option>
+            </select>
           </div>
 
           <div className="hidden md:block overflow-auto max-h-[600px]">
@@ -401,7 +414,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
                     </td>
                   </tr>
                 ) : (
-                  products.map((product) => (
+                  (filterCategory === "Semua" ? products : products.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase())).map((product) => (
                     <tr key={product.id} className="hover:bg-muted/10 transition-colors">
                       <td className="p-4 text-center text-2xl">
                         {product.imageUrl ? (
@@ -454,7 +467,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
                 Tidak ada produk dalam database.
               </div>
             ) : (
-              products.map((product) => (
+              (filterCategory === "Semua" ? products : products.filter(p => p.category.toLowerCase() === filterCategory.toLowerCase())).map((product) => (
                 <div key={product.id} className="p-4 flex gap-4 hover:bg-muted/10 transition-colors">
                   <div className="flex-shrink-0">
                     {product.imageUrl ? (

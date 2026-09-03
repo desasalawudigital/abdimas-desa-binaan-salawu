@@ -87,14 +87,6 @@ interface SettingsData {
   gmaps_link: string;
   hero_video_type: "none" | "youtube" | "local";
   hero_video_url: string;
-  hero_desc: string;
-  about_title: string;
-  about_desc_1: string;
-  about_desc_2: string;
-  visit_desc: string;
-  culture_desc: string;
-  cta_title: string;
-  cta_desc: string;
 }
 
 export default function AdminSettingsClient() {
@@ -110,15 +102,7 @@ export default function AdminSettingsClient() {
     address: "",
     gmaps_link: "",
     hero_video_type: "none",
-    hero_video_url: "",
-    hero_desc: "",
-    about_title: "",
-    about_desc_1: "",
-    about_desc_2: "",
-    visit_desc: "",
-    culture_desc: "",
-    cta_title: "",
-    cta_desc: ""
+    hero_video_url: ""
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -183,10 +167,15 @@ export default function AdminSettingsClient() {
     setSuccessMsg(null);
 
     try {
+      const getRes = await fetch("/api/settings");
+      const currentSettings = await getRes.json();
+      
+      const payload = { ...currentSettings, ...settings };
+
       const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings)
+        body: JSON.stringify(payload)
       });
 
       if (!res.ok) throw new Error("Gagal menyimpan pengaturan");
@@ -404,106 +393,6 @@ export default function AdminSettingsClient() {
                   placeholder="Tuliskan alamat lengkap desa..."
                   className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
-              </div>
-            </div>
-          </div>
-
-          {/* Konten Teks Website */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg font-poppins border-b border-border/40 pb-2">Konten Teks Website</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Hero */}
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-sm font-semibold font-poppins text-foreground">Deskripsi Beranda (Bawah Judul)</label>
-                <textarea
-                  name="hero_desc"
-                  value={settings.hero_desc}
-                  onChange={handleChange}
-                  className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-              </div>
-
-              {/* Tentang Desa */}
-              <div className="space-y-2 md:col-span-2 p-4 bg-muted/30 rounded-2xl border border-border/50">
-                <h4 className="font-semibold text-sm font-poppins mb-3 text-primary">Bagian Tentang Desa</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Judul</label>
-                    <input
-                      type="text"
-                      name="about_title"
-                      value={settings.about_title}
-                      onChange={handleChange}
-                      className="w-full border border-input rounded-xl px-4 py-2 font-sans focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Paragraf 1</label>
-                    <textarea
-                      name="about_desc_1"
-                      value={settings.about_desc_1}
-                      onChange={handleChange}
-                      className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Paragraf 2</label>
-                    <textarea
-                      name="about_desc_2"
-                      value={settings.about_desc_2}
-                      onChange={handleChange}
-                      className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Kunjungan & Budaya */}
-              <div className="space-y-2">
-                <label className="text-sm font-semibold font-poppins text-foreground">Deskripsi Kunjungan Wisata</label>
-                <textarea
-                  name="visit_desc"
-                  value={settings.visit_desc}
-                  onChange={handleChange}
-                  className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[100px] focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-semibold font-poppins text-foreground">Deskripsi Alam & Budaya</label>
-                <textarea
-                  name="culture_desc"
-                  value={settings.culture_desc}
-                  onChange={handleChange}
-                  className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[100px] focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-              </div>
-
-              {/* Call to Action */}
-              <div className="space-y-2 md:col-span-2 p-4 bg-muted/30 rounded-2xl border border-border/50">
-                <h4 className="font-semibold text-sm font-poppins mb-3 text-secondary">Bagian Ajakan Kunjungan (Bawah Budaya)</h4>
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Judul</label>
-                    <input
-                      type="text"
-                      name="cta_title"
-                      value={settings.cta_title}
-                      onChange={handleChange}
-                      className="w-full border border-input rounded-xl px-4 py-2 font-sans focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-muted-foreground mb-1 block">Deskripsi</label>
-                    <textarea
-                      name="cta_desc"
-                      value={settings.cta_desc}
-                      onChange={handleChange}
-                      className="w-full border border-input rounded-xl px-4 py-2 font-sans min-h-[80px] focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
