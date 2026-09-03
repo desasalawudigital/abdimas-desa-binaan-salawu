@@ -34,7 +34,9 @@ export async function POST(request: Request) {
 
     const langInstruction = language === "en" ? "TULIS HASILNYA DALAM BAHASA INGGRIS AMERIKA (US ENGLISH) YANG PROFESIONAL." : "TULIS HASILNYA DALAM BAHASA INDONESIA YANG MENARIK.";
 
-    if (contentType === "ide") {
+    if (contentType === "deskripsi") {
+      prompt = `${context}\nTugas: Buatkan sebuah deskripsi produk yang lengkap, menarik, persuasif, dan SEO-friendly untuk produk ini. Jelaskan manfaatnya, keunikannya, dan dorong pembaca untuk membeli.\n\n${langInstruction}`;
+    } else if (contentType === "ide") {
       prompt = `${context}\nTugas: Berikan 3 ide konten promosi yang menarik dan kreatif (misalnya untuk Instagram Reels atau TikTok) untuk produk ini. Jelaskan secara singkat konsep videonya.\n\n${langInstruction}`;
     } else if (contentType === "caption") {
       prompt = `${context}\nTugas: Buatkan 1 caption Instagram yang menarik (copywriting yang memikat), sertakan Call-to-Action (CTA) untuk membeli, dan beberapa hashtag relevan.\n\n${langInstruction}`;

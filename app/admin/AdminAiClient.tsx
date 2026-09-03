@@ -160,6 +160,7 @@ export default function AdminAiClient({ products }: Props) {
               onChange={(e) => setContentType(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20 appearance-none font-medium"
             >
+              <option value="deskripsi">📝 Buat Deskripsi Produk</option>
               <option value="ide">💡 Ide Konten Promosi</option>
               <option value="caption">✍️ Caption & Copywriting</option>
               <option value="skrip">🎬 Skrip Video Pendek</option>
