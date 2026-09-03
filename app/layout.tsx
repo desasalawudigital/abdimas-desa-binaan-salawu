@@ -20,9 +20,11 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://desasalawudigital.vercel.app"),
   title: "Website Resmi Desa Binaan Salawu",
   description:
     "Website resmi Desa Binaan Salawu sebagai media promosi UMKM, budaya, wisata, dan informasi desa.",
+  applicationName: "Desa Salawu",
   keywords: [
     "Desa Salawu",
     "UMKM",
@@ -37,6 +39,14 @@ export const metadata: Metadata = {
       name: "Pemerintah Desa Binaan Salawu",
     },
   ],
+  openGraph: {
+    title: "Website Resmi Desa Binaan Salawu",
+    description: "Media promosi UMKM, budaya, wisata, dan informasi Desa Salawu.",
+    url: "https://desasalawudigital.vercel.app",
+    siteName: "Desa Salawu",
+    locale: "id_ID",
+    type: "website",
+  },
   verification: {
     google: "ejHgt-z9H2hJZjcIVjDI8FeYNvPDN6oEcikWACPWCZs",
   },
