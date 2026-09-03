@@ -74,7 +74,7 @@ export default async function HeroSection() {
           </h1>
 
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans whitespace-pre-wrap">
-            {settings.hero_desc || "Menghubungkan warisan kerajinan bambu tradisional, keindahan alam pegunungan, dan kearifan lokal Desa Salawu dengan ekosistem digital untuk kesejahteraan masyarakat berkelanjutan."}
+            {settings.hero_desc || "Portal resmi Desa Binaan Salawu, Kabupaten Tasikmalaya. Pusat inovasi UMKM kriya bambu alami, kuliner lokal khas, dan ekowisata perdesaan."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
@@ -88,9 +88,10 @@ export default async function HeroSection() {
             </Link>
             <Link
               href="#tentang"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto rounded-full font-semibold border-primary/20 hover:bg-primary/5 hover:text-primary")}
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto rounded-full font-semibold border-primary/20 hover:bg-primary/5 hover:text-primary group")}
             >
               Pelajari Lebih Lanjut
+              <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
