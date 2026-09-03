@@ -77,6 +77,22 @@ export default async function HeroSection() {
             {settings.hero_desc || "Menghubungkan warisan kerajinan bambu tradisional, keindahan alam pegunungan, dan kearifan lokal Desa Salawu dengan ekosistem digital untuk kesejahteraan masyarakat berkelanjutan."}
           </p>
 
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <Link
+              href="/products"
+              className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full sm:w-auto rounded-full group font-semibold")}
+            >
+              Lihat Katalog UMKM
+              <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="#tentang"
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto rounded-full font-semibold border-primary/20 hover:bg-primary/5 hover:text-primary")}
+            >
+              Pelajari Lebih Lanjut
+            </Link>
+          </div>
+
           {/* Quick Statistics */}
           <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-8 border-t border-border/60 max-w-md mx-auto lg:mx-0">
             <div>
