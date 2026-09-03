@@ -138,7 +138,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   )}
                 >
                   <MessageCircle className="h-5 w-5" />
-                  Pesan via WhatsApp (Hubungi Pengrajin)
+                  Pesan via WhatsApp
                 </a>
                 <p className="text-center text-[10px] text-muted-foreground font-sans">
                   Pemesanan dilakukan langsung ke produsen desa untuk memastikan harga terbaik tanpa biaya admin broker.
