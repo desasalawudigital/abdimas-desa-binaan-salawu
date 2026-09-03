@@ -14,15 +14,13 @@ interface MediaItemWithMeta {
 
 
 
-export default function HeroSection() {
-  const galleriesPath = path.join(process.cwd(), "data", "galleries.json");
+import { getGalleries } from "@/lib/db";
+
+export default async function HeroSection() {
   let heroImage: MediaItemWithMeta | null = null;
   try {
-    if (fs.existsSync(galleriesPath)) {
-      const fileContent = fs.readFileSync(galleriesPath, "utf8");
-      const data = JSON.parse(fileContent);
-      heroImage = data.hero_image || null;
-    }
+    const data = await getGalleries();
+    heroImage = data?.hero_image || null;
   } catch (e) {
     console.error("Failed to load galleries for hero:", e);
   }

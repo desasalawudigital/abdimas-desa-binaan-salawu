@@ -348,3 +348,51 @@ export async function deleteVisit(id: string): Promise<boolean> {
   if (visits.length === filtered.length) return false;
   return await saveLocalVisits(filtered);
 }
+
+// Galleries & Settings DB Operations (Firestore + Fallback)
+export async function getGalleries(): Promise<any> {
+  if (isFirebaseConfigured()) {
+    try {
+      const docRef = doc(db, "settings", "galleries");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data();
+      }
+    } catch (error) {
+      console.error("Firestore getGalleries error, falling back to local file:", error);
+    }
+  }
+  try {
+    const galleriesPath = path.join(process.cwd(), "data", "galleries.json");
+    const data = await fs.readFile(galleriesPath, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    return { seni_anyaman: [], alam_budaya: [], hero_image: null };
+  }
+}
+
+export async function getSettings(): Promise<any> {
+  if (isFirebaseConfigured()) {
+    try {
+      const docRef = doc(db, "settings", "general");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data();
+      }
+    } catch (error) {
+      console.error("Firestore getSettings error, falling back to local file:", error);
+    }
+  }
+  const defaultSettings = {
+    instagram: "", facebook: "", tiktok: "", x_twitter: "", youtube: "",
+    website: "", whatsapp: "", email: "", address: "", gmaps_link: "",
+    hero_video_type: "none", hero_video_url: ""
+  };
+  try {
+    const settingsPath = path.join(process.cwd(), "data", "settings.json");
+    const data = await fs.readFile(settingsPath, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    return defaultSettings;
+  }
+}

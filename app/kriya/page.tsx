@@ -8,13 +8,13 @@ import { cn } from "@/lib/utils";
 import fs from "fs";
 import path from "path";
 
-export default function KriyaPage() {
-  const galleriesPath = path.join(process.cwd(), "data", "galleries.json");
+import { getGalleries } from "@/lib/db";
+
+export default async function KriyaPage() {
   let seniAnyamanImages: string[] = [];
   try {
-    const fileContent = fs.readFileSync(galleriesPath, "utf8");
-    const data = JSON.parse(fileContent);
-    seniAnyamanImages = data.seni_anyaman || [];
+    const data = await getGalleries();
+    seniAnyamanImages = data?.seni_anyaman || [];
   } catch (e) {
     console.error("Failed to load galleries:", e);
   }

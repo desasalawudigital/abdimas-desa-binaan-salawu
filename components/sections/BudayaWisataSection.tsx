@@ -9,15 +9,13 @@ interface AlamBudayaItem {
   desc: string;
 }
 
-export default function BudayaWisataSection() {
-  const galleriesPath = path.join(process.cwd(), "data", "galleries.json");
+import { getGalleries } from "@/lib/db";
+
+export default async function BudayaWisataSection() {
   let alamBudayaImages: AlamBudayaItem[] = [];
   try {
-    if (fs.existsSync(galleriesPath)) {
-      const fileContent = fs.readFileSync(galleriesPath, "utf8");
-      const data = JSON.parse(fileContent);
-      alamBudayaImages = data.alam_budaya || [];
-    }
+    const data = await getGalleries();
+    alamBudayaImages = data?.alam_budaya || [];
   } catch (e) {
     console.error("Failed to load galleries for homepage:", e);
   }

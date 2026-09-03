@@ -8,16 +8,15 @@ const getYoutubeVideoId = (url: string) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
-export default function VideoSection() {
-  const settingsPath = path.join(process.cwd(), "data", "settings.json");
+import { getSettings } from "@/lib/db";
+
+export default async function VideoSection() {
   let heroVideoType = "none";
   let heroVideoUrl = "";
   try {
-    if (fs.existsSync(settingsPath)) {
-      const settingsData = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
-      heroVideoType = settingsData.hero_video_type || "none";
-      heroVideoUrl = settingsData.hero_video_url || "";
-    }
+    const settingsData = await getSettings();
+    heroVideoType = settingsData?.hero_video_type || "none";
+    heroVideoUrl = settingsData?.hero_video_url || "";
   } catch (e) {
     console.error("Failed to load settings for video section:", e);
   }
