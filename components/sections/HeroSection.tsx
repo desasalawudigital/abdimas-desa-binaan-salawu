@@ -14,18 +14,30 @@ interface MediaItemWithMeta {
 
 
 
-import { getGalleries } from "@/lib/db";
+import { getGalleries, getProducts } from "@/lib/db";
 
 export default async function HeroSection() {
   let heroImage: MediaItemWithMeta | null = null;
+  let alamBudayaCount = 0;
+  let productsCount = 0;
+  let craftsmenCount = 0;
+
   try {
     const data = await getGalleries();
     heroImage = data?.hero_image || null;
+    alamBudayaCount = data?.alam_budaya?.length || 0;
   } catch (e) {
     console.error("Failed to load galleries for hero:", e);
   }
 
-
+  try {
+    const products = await getProducts();
+    productsCount = products.length;
+    const uniqueCraftsmen = new Set(products.map((p) => p.craftsman?.trim()).filter(Boolean));
+    craftsmenCount = uniqueCraftsmen.size;
+  } catch (e) {
+    console.error("Failed to load products for hero:", e);
+  }
 
   return (
     <section
@@ -84,15 +96,15 @@ export default async function HeroSection() {
           {/* Quick Statistics */}
           <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-8 border-t border-border/60 max-w-md mx-auto lg:mx-0">
             <div>
-              <p className="text-2xl md:text-3xl font-bold text-primary font-poppins">300+</p>
+              <p className="text-2xl md:text-3xl font-bold text-primary font-poppins">{craftsmenCount}</p>
               <p className="text-xs text-muted-foreground mt-1">Pengrajin Bambu</p>
             </div>
             <div>
-              <p className="text-2xl md:text-3xl font-bold text-primary font-poppins">15+</p>
+              <p className="text-2xl md:text-3xl font-bold text-primary font-poppins">{productsCount}</p>
               <p className="text-xs text-muted-foreground mt-1">Varian Anyaman</p>
             </div>
             <div>
-              <p className="text-2xl md:text-3xl font-bold text-primary font-poppins">5+</p>
+              <p className="text-2xl md:text-3xl font-bold text-primary font-poppins">{alamBudayaCount}</p>
               <p className="text-xs text-muted-foreground mt-1">Wisata Unggulan</p>
             </div>
           </div>
