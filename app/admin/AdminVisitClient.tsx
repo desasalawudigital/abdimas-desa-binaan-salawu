@@ -203,28 +203,16 @@ export default function AdminVisitClient({ initialVisits }: Props) {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground font-poppins">Tanggal Kunjungan</label>
-                <input
-                  type="text"
-                  placeholder="Contoh: 15 Juli 2026"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20"
-                  required
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground font-poppins">Visual Emoji</label>
-                <input
-                  type="text"
-                  placeholder="Contoh: 📸"
-                  value={imageEmoji}
-                  onChange={(e) => setImageEmoji(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-border text-sm text-center focus:outline-none focus:border-primary bg-muted/20"
-                />
-              </div>
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-muted-foreground font-poppins">Tanggal Kunjungan</label>
+              <input
+                type="text"
+                placeholder="Contoh: 15 Juli 2026"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-border text-sm focus:outline-none focus:border-primary bg-muted/20"
+                required
+              />
             </div>
 
             <div className="space-y-1">
