@@ -66,16 +66,20 @@ export default function AdminVisitClient({ initialVisits }: Props) {
         const fileToUpload = await compressImage(imageFile);
         const formData = new FormData();
         formData.append("file", fileToUpload);
+        formData.append("upload_preset", "abdimas_desa");
 
-        const result = await safeFetchJson<{ url: string }>("/api/upload", {
+        const res = await fetch("https://api.cloudinary.com/v1_1/nyc6iwek/image/upload", {
           method: "POST",
           body: formData,
         });
 
-        if (!result.ok || !result.data) {
-          throw new Error(result.error || "Gagal mengunggah foto.");
+        if (!res.ok) {
+           const errData = await res.json();
+           throw new Error(errData.error?.message || "Gagal mengunggah foto ke Cloudinary.");
         }
-        uploadedImageUrl = result.data.url;
+
+        const data = await res.json();
+        uploadedImageUrl = data.secure_url;
       } catch (err: unknown) {
         setMessage({ text: err instanceof Error ? err.message : "Gagal mengunggah foto.", type: "error" });
         setIsSubmitting(false);
