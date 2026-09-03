@@ -457,12 +457,12 @@ export default function AdminMediaClient() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-auto max-h-[600px]">
             {isLoading ? (
                <div className="p-10 flex justify-center"><RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" /></div>
             ) : (
-              <table className="w-full text-left text-sm">
-                <thead className="bg-muted/40 border-b border-border/60 text-xs text-muted-foreground font-poppins uppercase">
+              <table className="w-full text-left text-sm relative">
+                <thead className="bg-muted/40 border-b border-border/60 text-xs text-muted-foreground font-poppins uppercase sticky top-0 z-10 backdrop-blur-sm">
                   <tr>
                     <th className="p-4 w-12 text-center">Visual</th>
                     <th className="p-4">Detail Media</th>

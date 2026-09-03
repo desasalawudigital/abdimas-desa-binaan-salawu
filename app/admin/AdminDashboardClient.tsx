@@ -382,9 +382,9 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
             <h2 className="font-bold text-lg font-poppins text-foreground">Daftar Produk Terdaftar</h2>
           </div>
 
-          <div className="hidden md:block overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-muted/40 border-b border-border/60 text-xs text-muted-foreground font-poppins uppercase">
+          <div className="hidden md:block overflow-auto max-h-[600px]">
+            <table className="w-full text-left text-sm relative">
+              <thead className="bg-muted/40 border-b border-border/60 text-xs text-muted-foreground font-poppins uppercase sticky top-0 z-10 backdrop-blur-sm">
                 <tr>
                   <th className="p-4 w-12 text-center">Visual</th>
                   <th className="p-4">Nama & Kategori</th>
@@ -448,7 +448,7 @@ export default function AdminDashboardClient({ initialProducts }: Props) {
           </div>
 
           {/* Mobile Cards List */}
-          <div className="md:hidden divide-y divide-border/40">
+          <div className="md:hidden divide-y divide-border/40 overflow-y-auto max-h-[600px]">
             {products.length === 0 ? (
               <div className="text-center py-10 text-muted-foreground text-xs">
                 Tidak ada produk dalam database.
