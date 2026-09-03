@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, ShoppingBag, MapPin } from "lucide-react";
+import { ArrowRight, ShoppingBag, MapPin, ShoppingCart } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import fs from "fs";
@@ -74,7 +74,7 @@ export default async function HeroSection() {
           </h1>
 
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans whitespace-pre-wrap">
-            {settings.hero_desc || "Portal resmi Desa Binaan Salawu, Kabupaten Tasikmalaya. Pusat inovasi UMKM kriya bambu alami, kuliner lokal khas, dan ekowisata perdesaan."}
+            {settings.hero_desc || "Desa Salawu merupakan salah satu pusat kerajinan anyaman bambu tertua di Tasikmalaya yang melestarikan kearifan lokal dan ekowisata perdesaan secara berkelanjutan."}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
@@ -82,7 +82,7 @@ export default async function HeroSection() {
               href="/products"
               className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full sm:w-auto rounded-full group font-semibold")}
             >
-              <ShoppingBag className="mr-2 h-4 w-4" />
+              <ShoppingCart className="mr-2 h-4 w-4" />
               Lihat Katalog UMKM
               <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
             </Link>

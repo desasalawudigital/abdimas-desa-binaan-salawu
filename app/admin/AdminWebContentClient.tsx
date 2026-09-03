@@ -142,6 +142,7 @@ export default function AdminWebContentClient() {
               {/* Hero */}
               <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-semibold font-poppins text-foreground">Deskripsi Beranda (Bawah Judul)</label>
+                <p className="text-xs text-muted-foreground mb-2">Teks pengantar yang muncul paling atas di halaman utama (Beranda), tepat di bawah judul besar "Desa Binaan Salawu".</p>
                 <textarea
                   name="hero_desc"
                   value={settings.hero_desc}
@@ -152,7 +153,8 @@ export default function AdminWebContentClient() {
 
               {/* Tentang Desa */}
               <div className="space-y-2 md:col-span-2 p-4 bg-muted/30 rounded-2xl border border-border/50">
-                <h4 className="font-semibold text-sm font-poppins mb-3 text-primary">Bagian Tentang Desa</h4>
+                <h4 className="font-semibold text-sm font-poppins text-primary">Bagian Tentang Desa</h4>
+                <p className="text-xs text-muted-foreground mb-3">Ditampilkan di bagian tengah halaman Beranda, di samping ilustrasi peta desa.</p>
                 <div className="space-y-4">
                   <div>
                     <label className="text-xs font-semibold text-muted-foreground mb-1 block">Judul</label>
@@ -188,6 +190,7 @@ export default function AdminWebContentClient() {
               {/* Kunjungan & Budaya */}
               <div className="space-y-2">
                 <label className="text-sm font-semibold font-poppins text-foreground">Deskripsi Kunjungan Wisata</label>
+                <p className="text-xs text-muted-foreground mb-2">Ditampilkan di halaman Beranda bagian "Dokumentasi Desa" (slider foto).</p>
                 <textarea
                   name="visit_desc"
                   value={settings.visit_desc}
@@ -198,6 +201,7 @@ export default function AdminWebContentClient() {
 
               <div className="space-y-2">
                 <label className="text-sm font-semibold font-poppins text-foreground">Deskripsi Alam & Budaya</label>
+                <p className="text-xs text-muted-foreground mb-2">Ditampilkan di halaman Beranda bagian "Eksplorasi Keindahan Alam & Budaya Salawu".</p>
                 <textarea
                   name="culture_desc"
                   value={settings.culture_desc}
@@ -208,7 +212,8 @@ export default function AdminWebContentClient() {
 
               {/* Call to Action */}
               <div className="space-y-2 md:col-span-2 p-4 bg-muted/30 rounded-2xl border border-border/50">
-                <h4 className="font-semibold text-sm font-poppins mb-3 text-secondary">Bagian Ajakan Kunjungan (Bawah Budaya)</h4>
+                <h4 className="font-semibold text-sm font-poppins text-secondary">Bagian Ajakan Kunjungan (Bawah Budaya)</h4>
+                <p className="text-xs text-muted-foreground mb-3">Ditampilkan di bagian paling bawah halaman Beranda (sebelum footer) untuk mengajak pengunjung datang.</p>
                 <div className="space-y-4">
                   <div>
                     <label className="text-xs font-semibold text-muted-foreground mb-1 block">Judul</label>

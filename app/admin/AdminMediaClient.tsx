@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Plus, Edit2, Trash2, X, RefreshCw, Image as ImageIcon, Video, Link2 } from "lucide-react";
+import { Plus, Edit2, Trash2, X, RefreshCw, Image as ImageIcon, Video, Link2, Eye } from "lucide-react";
 import { compressImage } from "@/lib/image-compression";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +40,7 @@ export default function AdminMediaClient() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
+  const [viewMediaItem, setViewMediaItem] = useState<UIMediaItem | null>(null);
 
   // Form Fields State
   const [isEditingId, setIsEditingId] = useState<string | null>(null);
@@ -520,6 +521,13 @@ export default function AdminMediaClient() {
                         <td className="p-4">
                           <div className="flex items-center justify-center space-x-2">
                             <button
+                              onClick={() => setViewMediaItem(item)}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                              title="Lihat Media"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </button>
+                            <button
                               onClick={() => handleEditClick(item)}
                               className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer"
                               title="Edit Media"
@@ -544,6 +552,47 @@ export default function AdminMediaClient() {
           </div>
         </div>
       </div>
+
+      {/* Media Viewer Modal */}
+      {viewMediaItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-background rounded-3xl overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl animate-in zoom-in duration-300">
+            <div className="flex items-center justify-between p-4 border-b border-border/40 bg-muted/20">
+              <h3 className="font-bold text-lg font-poppins">{viewMediaItem.title || "Detail Media"}</h3>
+              <button
+                onClick={() => setViewMediaItem(null)}
+                className="p-2 text-muted-foreground hover:bg-muted hover:text-foreground rounded-full transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="p-6 flex-1 overflow-auto flex flex-col items-center justify-center bg-black/5">
+              {viewMediaItem.category === "hero_video" && viewMediaItem.videoType === "youtube" ? (
+                <div className="w-full aspect-video rounded-xl overflow-hidden">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={viewMediaItem.url.replace("watch?v=", "embed/")}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              ) : viewMediaItem.category === "hero_video" ? (
+                <video src={viewMediaItem.url} controls className="max-w-full max-h-[60vh] rounded-xl shadow-lg border border-border/40" />
+              ) : (
+                <img src={viewMediaItem.url} alt={viewMediaItem.title} className="max-w-full max-h-[60vh] object-contain rounded-xl shadow-lg border border-border/40" />
+              )}
+              {viewMediaItem.desc && (
+                <p className="mt-6 text-center text-muted-foreground font-sans bg-background/50 p-4 rounded-xl border border-border/50 max-w-2xl">
+                  {viewMediaItem.desc}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
