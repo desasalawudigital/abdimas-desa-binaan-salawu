@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin, Globe, ExternalLink } from "lucide-react";
 
@@ -112,9 +113,19 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <span className="text-2xl font-bold font-poppins text-background">
-                Desa<span className="text-secondary">Salawu</span>
-              </span>
+              <div className="flex items-center space-x-2">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 bg-white">
+                  <Image 
+                    src="/logo.jpg" 
+                    alt="Logo Desa Salawu" 
+                    fill 
+                    className="object-cover"
+                  />
+                </div>
+                <span className="text-2xl font-bold font-poppins text-background">
+                  Desa<span className="text-secondary">Salawu</span>
+                </span>
+              </div>
               <p className="text-background/70 text-sm leading-relaxed whitespace-pre-wrap">
                 {settings.footer_desc || "Website resmi Desa Salawu. Media publikasi hasil kegiatan wisata lokal, promosi produk unggulan UMKM kerajinan bambu, dan pesona wisata budaya lokal."}
               </p>

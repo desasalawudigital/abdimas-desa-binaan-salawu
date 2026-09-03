@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, ArrowUpRight, Globe } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -41,6 +42,14 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
+          <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-primary/20">
+            <Image 
+              src="/logo.jpg" 
+              alt="Logo Desa Salawu" 
+              fill 
+              className="object-cover"
+            />
+          </div>
           <span className="text-xl md:text-2xl font-bold font-poppins text-primary">
             Desa<span className="text-secondary">Salawu</span>
           </span>
