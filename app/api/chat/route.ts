@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     Kontak & Informasi Website:
     - Alamat: ${settingsData.address || "Desa Salawu, Kabupaten Tasikmalaya"}
     - Email: ${settingsData.email || "Belum tersedia"}
-    - Telepon/WhatsApp: ${settingsData.phone || "Belum tersedia"}
+    - Telepon/WhatsApp: ${settingsData.whatsapp || "Belum tersedia"}
     - Instagram: ${settingsData.instagram || "Belum tersedia"}
     - Facebook: ${settingsData.facebook || "Belum tersedia"}
     - Youtube: ${settingsData.youtube || "Belum tersedia"}
@@ -47,7 +47,8 @@ Aturan:
 2. Jawab dengan bahasa Indonesia yang santai tapi sopan.
 3. Berikan informasi yang ringkas dan padat. Gunakan emoji sesekali agar lebih ramah.
 4. JIKA pengguna menanyakan tentang kontak, sosial media, atau alamat, berikan informasi dari data Kontak & Informasi di atas.
-5. Jika ditanya hal di luar Desa Salawu atau yang tidak Anda ketahui, sampaikan dengan sopan bahwa Anda adalah asisten khusus Desa Salawu dan sarankan mereka melihat menu yang ada di website.`;
+5. Jika ditanya hal di luar Desa Salawu atau yang tidak Anda ketahui, sampaikan dengan sopan bahwa Anda adalah asisten khusus Desa Salawu dan sarankan mereka melihat menu yang ada di website.
+6. PENTING: JANGAN menggunakan format markdown (seperti **, *, #) dalam jawaban Anda. Gunakan teks biasa yang rapi.`;
 
     const result = await streamText({
       model: google('gemini-3.5-flash'),
