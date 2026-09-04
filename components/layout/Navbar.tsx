@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Menu, X, ArrowUpRight, Globe } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +71,7 @@ export default function Navbar() {
 
         {/* CTA Button */}
         <div className="hidden md:flex items-center gap-3">
-
+          <LanguageSwitcher />
           <Link
             href="#kontak"
             className={cn(
@@ -84,6 +85,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center gap-2 relative z-50">
+          <LanguageSwitcher />
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 text-foreground focus:outline-none relative z-50 pointer-events-auto"

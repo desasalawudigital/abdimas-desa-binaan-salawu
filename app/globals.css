@@ -155,3 +155,20 @@
     transform: translateX(-50%);
   }
 }
+
+/* Hide Google Translate top bar & frame */
+.skiptranslate > iframe.skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+}
+body {
+  top: 0px !important;
+}
+/* Hide the translation tooltip when hovering over text */
+#goog-gt-tt {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

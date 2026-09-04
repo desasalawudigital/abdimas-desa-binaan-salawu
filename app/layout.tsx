@@ -66,6 +66,22 @@ export default function RootLayout({
       <head>
       </head>
       <body suppressHydrationWarning>
+        <div id="google_translate_element" style={{ display: "none" }}></div>
+        <Script
+          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+          strategy="afterInteractive"
+        />
+        <Script id="google-translate-init" strategy="afterInteractive">
+          {`
+            function googleTranslateElementInit() {
+              new google.translate.TranslateElement({
+                pageLanguage: 'id',
+                includedLanguages: 'en,id',
+                autoDisplay: false
+              }, 'google_translate_element');
+            }
+          `}
+        </Script>
         {children}
         <Toaster position="top-center" richColors theme="light" />
         <Chatbot />
