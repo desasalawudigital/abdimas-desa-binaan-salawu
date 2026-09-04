@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       });
     }
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +78,10 @@ export async function POST(request: Request) {
 
     if (!res.ok) {
       console.error("Gemini API Error:", data);
-      return NextResponse.json({ error: "Gagal menghasilkan konten dari AI." }, { status: 500 });
+      if (res.status === 429) {
+        return NextResponse.json({ error: "Terlalu banyak permintaan. AI sedang beristirahat sebentar, silakan coba lagi dalam 1 menit." }, { status: 429 });
+      }
+      return NextResponse.json({ error: data.error?.message || "Gagal menghasilkan konten dari AI." }, { status: 500 });
     }
 
     const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;

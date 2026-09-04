@@ -68,7 +68,7 @@ Aturan:
 8. RAHASIA & KEAMANAN: JANGAN PERNAH membagikan data sensitif sistem, API keys, password, atau informasi teknis internal website. Nomor WA penjual hanya boleh diberikan jika pengguna secara spesifik ingin membeli atau menghubungi penjual produk tertentu.`;
 
     const result = await streamText({
-      model: google('gemini-3.5-flash'),
+      model: google('gemini-flash-latest'),
       system: systemPrompt,
       messages,
     });
