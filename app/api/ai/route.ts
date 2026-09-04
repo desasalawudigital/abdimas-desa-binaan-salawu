@@ -78,19 +78,6 @@ export async function POST(request: Request) {
 
     let data = await res.json();
 
-    // Fallback to pro model if flash is overloaded or quota exceeded
-    if (!res.ok && (res.status === 503 || res.status === 429 || data.error?.message?.includes("high demand"))) {
-      console.log("Gemini Flash overloaded/quota hit. Falling back to Gemini Pro.");
-      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=${apiKey}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: requestBody,
-      });
-      data = await res.json();
-    }
-
     if (!res.ok) {
       console.error("Gemini API Error:", data);
       
@@ -99,7 +86,12 @@ export async function POST(request: Request) {
         errorMessage = "Server AI Google saat ini sedang penuh/sibuk karena tingginya permintaan global. Mohon tunggu beberapa saat dan coba lagi.";
       } else if (res.status === 429) {
         errorMessage = "Kuota API harian Anda telah habis atau Anda melakukan terlalu banyak permintaan dalam waktu singkat. Silakan coba lagi besok atau gunakan API key baru.";
+      } else if (res.status === 400) {
+        errorMessage = `Permintaan ditolak oleh server AI (Mungkin gambar terlalu besar atau format tidak didukung). Detail: ${data.error?.message}`;
       }
+
+      return NextResponse.json({ error: errorMessage }, { status: res.status });
+    }
 
       return NextResponse.json({ error: errorMessage }, { status: res.status });
     }
