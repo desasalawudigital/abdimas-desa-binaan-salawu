@@ -52,15 +52,18 @@ export default function LanguageSwitcher() {
     if (newLang === "en") {
       // Set to English
       document.cookie = "googtrans=/id/en; path=/";
-      // Also set for domain if possible to ensure it catches everywhere
       document.cookie = `googtrans=/id/en; domain=${window.location.hostname}; path=/`;
+      document.cookie = `googtrans=/id/en; domain=.${window.location.hostname}; path=/`;
     } else {
-      // Set back to default (Indonesian)
-      document.cookie = "googtrans=/id/id; path=/";
-      document.cookie = `googtrans=/id/id; domain=${window.location.hostname}; path=/`;
-      // Clear cookie as well
+      // Clear cookies
       document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${window.location.hostname}; path=/;`;
+      
+      // Force set to id/id to disable translation
+      document.cookie = "googtrans=/id/id; path=/";
+      document.cookie = `googtrans=/id/id; domain=${window.location.hostname}; path=/`;
+      document.cookie = `googtrans=/id/id; domain=.${window.location.hostname}; path=/`;
     }
     
     window.location.reload();
