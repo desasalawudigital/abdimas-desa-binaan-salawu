@@ -49,13 +49,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Tipe konten tidak valid." }, { status: 400 });
     }
 
-    const parts: Array<{ text?: string, inlineData?: { data: string, mimeType: string } }> = [{ text: prompt }];
+    const parts: Array<{ text?: string, inline_data?: { data: string, mime_type: string } }> = [{ text: prompt }];
 
     if (image && image.data && image.mimeType) {
       parts.push({
-        inlineData: {
+        inline_data: {
           data: image.data,
-          mimeType: image.mimeType
+          mime_type: image.mimeType
         }
       });
     }
