@@ -60,28 +60,48 @@ export async function POST(request: Request) {
       });
     }
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
+    const requestBody = JSON.stringify({
+      contents: [
+        {
+          parts: parts
+        }
+      ]
+    });
+
+    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: parts
-          }
-        ]
-      }),
+      body: requestBody,
     });
 
-    const data = await res.json();
+    let data = await res.json();
+
+    // Fallback to pro model if flash is overloaded or quota exceeded
+    if (!res.ok && (res.status === 503 || res.status === 429 || data.error?.message?.includes("high demand"))) {
+      console.log("Gemini Flash overloaded/quota hit. Falling back to Gemini Pro.");
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: requestBody,
+      });
+      data = await res.json();
+    }
 
     if (!res.ok) {
       console.error("Gemini API Error:", data);
-      if (res.status === 429) {
-        return NextResponse.json({ error: "Terlalu banyak permintaan. AI sedang beristirahat sebentar, silakan coba lagi dalam 1 menit." }, { status: 429 });
+      
+      let errorMessage = data.error?.message || "Gagal menghasilkan konten dari AI.";
+      if (errorMessage.includes("high demand") || res.status === 503) {
+        errorMessage = "Server AI Google saat ini sedang penuh/sibuk karena tingginya permintaan global. Mohon tunggu beberapa saat dan coba lagi.";
+      } else if (res.status === 429) {
+        errorMessage = "Kuota API harian Anda telah habis atau Anda melakukan terlalu banyak permintaan dalam waktu singkat. Silakan coba lagi besok atau gunakan API key baru.";
       }
-      return NextResponse.json({ error: data.error?.message || "Gagal menghasilkan konten dari AI." }, { status: 500 });
+
+      return NextResponse.json({ error: errorMessage }, { status: res.status });
     }
 
     const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
