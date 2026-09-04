@@ -30,20 +30,16 @@ export default async function BudayaWisataSection() {
       <div className="container mx-auto px-4 md:px-6">
         
         {/* Header */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-16">
-          <div className="lg:col-span-8 space-y-4">
-            <span className="text-sm font-semibold text-primary tracking-wider uppercase font-poppins flex items-center gap-1.5">
-              <Compass className="h-4 w-4 text-secondary" /> Pesona Desa Binaan
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold font-poppins text-foreground tracking-tight">
-              Eksplorasi Keindahan Alam & Budaya Salawu
-            </h2>
-          </div>
-          <div className="lg:col-span-4 lg:text-right">
-            <p className="text-muted-foreground text-sm font-sans max-w-sm ml-auto whitespace-pre-wrap">
-              {settings.culture_desc || "Dari keasrian pegunungan Priangan Timur hingga harmoni irama bambu tradisional yang terjaga lestari secara turun-temurun."}
-            </p>
-          </div>
+        <div className="flex flex-col gap-4 mb-16 max-w-3xl">
+          <span className="text-sm font-semibold text-primary tracking-wider uppercase font-poppins flex items-center gap-1.5">
+            <Compass className="h-4 w-4 text-secondary" /> Pesona Desa Binaan
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold font-poppins text-foreground tracking-tight">
+            Eksplorasi Keindahan Alam & Budaya Salawu
+          </h2>
+          <p className="text-muted-foreground text-base font-sans whitespace-pre-wrap mt-2 leading-relaxed">
+            {settings.culture_desc || "Dari keasrian pegunungan Priangan Timur hingga harmoni irama bambu tradisional yang terjaga lestari secara turun-temurun."}
+          </p>
         </div>
 
         {/* Showcase Grid */}
