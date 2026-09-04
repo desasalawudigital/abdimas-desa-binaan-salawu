@@ -11,15 +11,15 @@ export async function POST(request: Request) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      return NextResponse.json({ 
-        error: "GEMINI_API_KEY belum diatur.", 
-        missingKey: true 
+      return NextResponse.json({
+        error: "GEMINI_API_KEY belum diatur.",
+        missingKey: true
       }, { status: 401 });
     }
 
     let prompt = "";
     let context = `Kamu adalah seorang asisten AI pemasaran ahli untuk produk UMKM dari Desa Salawu. \n`;
-    
+
     if (productDetails) {
       context += `Detail Produk yang sedang dipasarkan:
 - Nama Produk: ${productDetails.name}
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       });
     }
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     }
 
     const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    
+
     if (!generatedText) {
       return NextResponse.json({ error: "AI tidak mengembalikan respon yang valid." }, { status: 500 });
     }
