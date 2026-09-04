@@ -17,6 +17,7 @@ export default function AdminAiClient({ products }: Props) {
   const [result, setResult] = useState<string>("");
   const [error, setError] = useState<{ text: string; missingKey?: boolean } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
 
   // Multimodal state
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -25,16 +26,86 @@ export default function AdminAiClient({ products }: Props) {
 
   const [manualProductName, setManualProductName] = useState("");
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = (file: File, maxSizeMB = 3.5): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          
+          let width = img.width;
+          let height = img.height;
+          const MAX_SIZE = 1920;
+          
+          if (width > height && width > MAX_SIZE) {
+            height *= MAX_SIZE / width;
+            width = MAX_SIZE;
+          } else if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height;
+            height = MAX_SIZE;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          let quality = 0.9;
+          const compress = () => {
+            canvas.toBlob((blob) => {
+              if (!blob) {
+                reject(new Error("Compression failed"));
+                return;
+              }
+              if (blob.size / 1024 / 1024 > maxSizeMB && quality > 0.1) {
+                quality -= 0.15;
+                compress();
+              } else {
+                resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                  type: "image/jpeg",
+                  lastModified: Date.now(),
+                }));
+              }
+            }, "image/jpeg", quality);
+          };
+          compress();
+        };
+        img.onerror = (e) => reject(e);
+      };
+      reader.onerror = (e) => reject(e);
+    });
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+      let file = e.target.files[0];
+      setError(null);
+      
       if (file.size > 4 * 1024 * 1024) {
-        setError({ text: "Ukuran foto maksimal 4MB." });
+        try {
+          setIsCompressing(true);
+          file = await compressImage(file);
+        } catch (err) {
+          setError({ text: "Gagal mengkompresi gambar. Silakan gunakan foto yang lebih kecil." });
+          setIsCompressing(false);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+          return;
+        } finally {
+          setIsCompressing(false);
+        }
+      }
+
+      if (file.size > 4 * 1024 * 1024) {
+        setError({ text: "Ukuran foto masih melebihi 4MB setelah dikompresi. Silakan gunakan foto lain." });
+        if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
+
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
-      setError(null);
     }
   };
 
@@ -215,12 +286,17 @@ export default function AdminAiClient({ products }: Props) {
                   <X className="h-4 w-4" />
                 </button>
               </div>
+            ) : isCompressing ? (
+              <div className="flex flex-col items-center justify-center w-full h-24 text-primary">
+                <Loader2 className="h-8 w-8 mb-2 animate-spin" />
+                <span className="text-sm font-medium">Sedang mengkompresi foto...</span>
+              </div>
             ) : (
               <label className="flex flex-col items-center justify-center w-full h-24 cursor-pointer">
                 <ImagePlus className="h-8 w-8 text-muted-foreground mb-2" />
                 <span className="text-sm font-medium text-foreground">Unggah Foto Produk untuk dianalisis AI</span>
-                <span className="text-xs text-muted-foreground mt-1">PNG, JPG, max 4MB</span>
-                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                <span className="text-xs text-muted-foreground mt-1">PNG, JPG, foto besar otomatis dikompres (maks ~4MB)</span>
+                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" disabled={isCompressing} />
               </label>
             )}
           </div>
