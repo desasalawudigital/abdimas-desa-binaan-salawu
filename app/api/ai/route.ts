@@ -93,9 +93,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: errorMessage }, { status: res.status });
     }
 
-      return NextResponse.json({ error: errorMessage }, { status: res.status });
-    }
-
     const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!generatedText) {
